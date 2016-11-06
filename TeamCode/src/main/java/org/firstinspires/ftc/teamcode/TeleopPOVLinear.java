@@ -55,8 +55,8 @@ public class TeleopPOVLinear extends LinearOpMode {
                 right /= max;
             }
 
-            robot.leftMotor.setPower(left);
-            robot.rightMotor.setPower(right);
+            robot.leftDriveMotor.setPower(left);
+            robot.rightDriveMotor.setPower(right);
 
             // Use gamepad left & right Bumpers to open and close the claw
             if (gamepad1.right_bumper) {

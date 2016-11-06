@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.util.Range;
 
 /**
  * Created by RoboLords
@@ -45,8 +44,8 @@ public class AutoDriveToPressBeacon extends LinearOpMode {
                 rightPower = 1;
             }
             // Send telemetry message to signify robot running;
-            robot.leftMotor.setPower(leftPower);
-            robot.rightMotor.setPower(rightPower);
+            robot.leftDriveMotor.setPower(leftPower);
+            robot.rightDriveMotor.setPower(rightPower);
 
             telemetry.addData("left", "%.2f", leftPower);
             telemetry.addData("right", "%.2f", rightPower);
