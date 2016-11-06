@@ -1,11 +1,8 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.Range;
-
-import org.firstinspires.ftc.robotcontroller.external.samples.HardwarePushbot;
 
 /**
  * This particular OpMode executes a POV Game style Teleop for a PushBot
@@ -71,25 +68,39 @@ public class TeleopPOVLinear extends LinearOpMode {
             // Move both servos to new position.  Assume servos are mirror image of each other.
             clawOffset = Range.clip(clawOffset, -0.5, 0.5);
             robot.leftClaw.setPosition(robot.MID_SERVO + clawOffset);
-            robot.rightClaw.setPosition(robot.MID_SERVO - clawOffset);
+//            robot.tubeServo.setPosition(robot.MID_SERVO - clawOffset);
+//            robot.tubeServo.setPosition(robot.TUBE_SERVO_POSITION_START);
 
 //             Use gamepad buttons to move arm up (Y) and down (A)
-            if (gamepad1.y) {
+            if (gamepad2.x) {
 //                robot.armMotor.setPower(robot.ARM_UP_POWER);
-                robot.tubeServo.setPosition(robot.MID_SERVO + clawOffset);
-            } else if (gamepad1.a) {
+//                robot.rightClaw.setPosition(robot.MID_SERVO + clawOffset);
+                robot.tubeServo.setPosition(robot.TUBE_SERVO_POSITION_START);
+            } else if (gamepad2.y) {
 //                robot.armMotor.setPower(robot.ARM_DOWN_POWER);
-                robot.tubeServo.setPosition(robot.MID_SERVO - clawOffset);
-            } else {
+//                robot.rightClaw.setPosition(robot.MID_SERVO - clawOffset);
+                robot.tubeServo.setPosition(robot.TUBE_SERVO_POSITION_DEGREE_45);
+            } else if (gamepad2.b) {
 //                robot.armMotor.setPower(0.0);
-                robot.tubeServo.setPosition(robot.MID_SERVO);
+//                robot.rightClaw.setPosition(robot.MID_SERVO);
+                robot.tubeServo.setPosition(robot.TUBE_SERVO_POSITION_DEGREE_90);
+            } else if (gamepad2.a) {
+//                robot.armMotor.setPower(0.0);
+//                robot.rightClaw.setPosition(robot.MID_SERVO);
+                robot.tubeServo.setPosition(robot.TUBE_SERVO_POSITION_DEGREE_180);
             }
+
 
             // Send telemetry message to signify robot running;
             telemetry.addData("claw", "Offset = %.2f", clawOffset);
             telemetry.addData("left", "%.2f", left);
             telemetry.addData("right", "%.2f", right);
 
+            telemetry.addData("rightClaw position:", "%.2f", robot.rightClaw.getPosition());
+            telemetry.addData("leftClaw position:", "%.2f", robot.leftClaw.getPosition());
+            telemetry.addData("tubeServo position:", "%.2f", robot.tubeServo.getPosition());
+            telemetry.addData("right", "%.2f", right);
+//
             telemetry.addData("Raw", robot.opticalDistanceSensor.getRawLightDetected());
             telemetry.addData("Normal", robot.opticalDistanceSensor.getLightDetected());
 
