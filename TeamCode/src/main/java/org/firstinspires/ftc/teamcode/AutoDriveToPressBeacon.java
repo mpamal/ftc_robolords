@@ -1,14 +1,40 @@
 package org.firstinspires.ftc.teamcode;
 
+import android.graphics.Color;
+
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
+import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 /**
  * Created by RoboLords
  */
-@TeleOp(name = "Auto: Drive To Press Beacon", group = "RoboLords")
+@Autonomous(name = "Auto: Drive To Press Beacon", group = "RoboLords")
 public class AutoDriveToPressBeacon extends LinearOpMode {
     RoboLordsHardware robot = new RoboLordsHardware();
+    private ElapsedTime runtime = new ElapsedTime();
+
+    //    static final double     COUNTS_PER_MOTOR_REV    = 1440 ;
+    static final double COUNTS_PER_MOTOR_REV = 7;
+    static final double DRIVE_GEAR_REDUCTION = 60.0;     // This is < 1.0 if geared UP
+    static final double WHEEL_DIAMETER_INCHES = 4.0;     // For figuring circumference
+    static final double COUNTS_PER_INCH = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
+            (WHEEL_DIAMETER_INCHES * 3.1415);
+    static final double DRIVE_SPEED = 0.6;
+    static final double TURN_SPEED = 0.5;
+
+    // hsvValues is an array that will hold the hue, saturation, and value information.
+    float hsvValues[] = {0F, 0F, 0F};
+
+    // values is a reference to the hsvValues array.
+    final float values[] = hsvValues;
+
+    // bLedOn represents the state of the LED.
+    boolean bLedOn = true;
+    boolean currentButtonState = true;
+    boolean previousState = true;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -16,56 +42,40 @@ public class AutoDriveToPressBeacon extends LinearOpMode {
         double rightPower;
         double max;
 
-        /* Initialize the hardware variables.
-         * The init() method of the hardware class does all the work here
-         */
         robot.init(hardwareMap);
 
-        // Send telemetry message to signify robot waiting;
-        telemetry.addData("Robot", "Hello Auto Driver");    //
+        telemetry.addData("Status", "Waiting to start");
         telemetry.update();
 
-        // Wait for the game to start (driver presses PLAY)
+        // wait for the start button to be pressed.
         waitForStart();
 
         while (opModeIsActive()) {
+            // check the status of the x button on either gamepad.
+            currentButtonState = gamepad1.x;
 
-            double rawLight = robot.opticalDistanceSensor.getRawLightDetected();
-
-            telemetry.addData("Raw", rawLight);
-            telemetry.addData("Normal", robot.opticalDistanceSensor.getLightDetected());
-
-//            Stop the robot because it is closer to the wall
-            if (rawLight >= 0.6) {
-                leftPower = 0;
-                rightPower = 0;
-            } else {
-                leftPower = 1;
-                rightPower = 1;
+            // check for button state transitions.
+            if ((currentButtonState == true) && (currentButtonState != previousState)) {
+                // button is transitioning to a pressed state. So Toggle LED
+                bLedOn = !bLedOn;
+                robot.colorSensor.enableLed(bLedOn);
             }
-            // Send telemetry message to signify robot running;
-            robot.leftDriveMotor.setPower(leftPower);
-            robot.rightDriveMotor.setPower(rightPower);
+            // update previous state variable.
+            previousState = currentButtonState;
 
-            telemetry.addData("left", "%.2f", leftPower);
-            telemetry.addData("right", "%.2f", rightPower);
+            // convert the RGB values to HSV values.
+            Color.RGBToHSV(robot.colorSensor.red() * 8, robot.colorSensor.green() * 8, robot.colorSensor.blue() * 8, hsvValues);
 
-
-            if (robot.irSeekerSensor.signalDetected()) {
-                telemetry.addData("Angle", robot.irSeekerSensor.getAngle());
-                telemetry.addData("Strength", robot.irSeekerSensor.getStrength());
-            } else {
-                telemetry.addData("Seeker", "Signal Lost");
-            }
-
-            if (robot.touchSensor.isPressed()) {
-                telemetry.addData("Touch", "Is Pressed");
-            } else {
-                telemetry.addData("Touch", "Is Not Pressed");
-            }
+            // send the info back to driver station using telemetry function.
+            telemetry.addData("LED", bLedOn ? "On" : "Off");
+            telemetry.addData("Clear", robot.colorSensor.alpha());
+            telemetry.addData("Red  ", robot.colorSensor.red());
+            telemetry.addData("Green", robot.colorSensor.green());
+            telemetry.addData("Blue ", robot.colorSensor.blue());
+            telemetry.addData("Hue", hsvValues[0]);
 
             telemetry.update();
-            idle();
+            idle(); // Always call idle() at the bottom of your while(opModeIsActive()) loop
         }
     }
 }

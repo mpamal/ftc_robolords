@@ -15,12 +15,11 @@ import com.qualcomm.robotcore.util.Range;
  */
 
 @TeleOp(name = "Teleop: Drive", group = "RoboLords")
-public class TeleopPOVLinear extends LinearOpMode {
-
-    /* Declare OpMode members. */
-    RoboLordsHardware robot = new RoboLordsHardware();
+public class TeleopDrive extends RoboLordsLinearOpMode {
     double clawOffset = 0;                       // Servo mid position
     final double CLAW_SPEED = 0.02;                   // sets rate to move servo
+    static final double DRIVE_SPEED_MIN = -0.5;
+    static final double DRIVE_SPEED_MAX = 0.5;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -34,7 +33,7 @@ public class TeleopPOVLinear extends LinearOpMode {
         robot.init(hardwareMap);
 
         // Send telemetry message to signify robot waiting;
-        telemetry.addData("Robot", "Hello Driver");    //
+        log("Robot", "Hello Driver");    //
         telemetry.update();
 
         // Wait for the game to start (driver presses PLAY)
@@ -48,21 +47,41 @@ public class TeleopPOVLinear extends LinearOpMode {
             left = -gamepad1.left_stick_y + gamepad1.right_stick_x;
             right = -gamepad1.left_stick_y - gamepad1.right_stick_x;
 
-            // Normalize the values so neither exceed +/- 1.0
-            max = Math.max(Math.abs(left), Math.abs(right));
-            if (max > 1.0) {
-                left /= max;
-                right /= max;
+            //Clip to be within the interval [min,max]
+            left = Range.clip(left, DRIVE_SPEED_MIN, DRIVE_SPEED_MAX);
+            right = Range.clip(right, DRIVE_SPEED_MIN, DRIVE_SPEED_MAX);
+
+            if (gamepad1.right_bumper) {
+                robot.leftDriveMotor.setPower(RoboLordsHardware.MOTOR_FULL_POWER_FORWARD);
+                robot.rightDriveMotor.setPower(RoboLordsHardware.MOTOR_FULL_POWER_REVERSE);
+            } else if (gamepad1.left_bumper) {
+                robot.leftDriveMotor.setPower(RoboLordsHardware.MOTOR_FULL_POWER_REVERSE);
+                robot.rightDriveMotor.setPower(RoboLordsHardware.MOTOR_FULL_POWER_FORWARD);
+            } else {
+                robot.leftDriveMotor.setPower(left);
+                robot.rightDriveMotor.setPower(right);
             }
 
-            robot.leftDriveMotor.setPower(left);
-            robot.rightDriveMotor.setPower(right);
+            // Send telemetry message to signify robot running;
+            log("gamepad1.right_bumper", gamepad1.right_bumper);
+            log("gamepad1.left_bumper", gamepad1.left_bumper);
+            log("left joystick", "%.2f", left);
+            log("right joystick", "%.2f", right);
+            log("left drive position:", "%7d", robot.leftDriveMotor.getCurrentPosition());
+            log("right drive position:", "%7d", robot.rightDriveMotor.getCurrentPosition());
 
             // Use gamepad left & right Bumpers to open and close the claw
-            if (gamepad1.right_bumper) {
-                clawOffset += CLAW_SPEED;
-            } else if (gamepad1.left_bumper) {
-                clawOffset -= CLAW_SPEED;
+//            if (gamepad1.right_bumper) {
+//                clawOffset += CLAW_SPEED;
+//            } else if (gamepad1.left_bumper) {
+//                clawOffset -= CLAW_SPEED;
+//            }
+
+            //launch and pickup
+            if (gamepad2.right_bumper) {
+                robot.launchMotor.setPower(RoboLordsHardware.MOTOR_FULL_POWER_FORWARD);
+            } else if (gamepad2.left_bumper) {
+                robot.launchMotor.setPower(RoboLordsHardware.MOTOR_FULL_POWER_REVERSE);
             }
 
             // Move both servos to new position.  Assume servos are mirror image of each other.
@@ -92,29 +111,30 @@ public class TeleopPOVLinear extends LinearOpMode {
 
 
             // Send telemetry message to signify robot running;
-            telemetry.addData("claw", "Offset = %.2f", clawOffset);
-            telemetry.addData("left", "%.2f", left);
-            telemetry.addData("right", "%.2f", right);
+            log("left motor position:", "%7d", robot.leftDriveMotor.getCurrentPosition());
+            log("right motor position:", "%7d", robot.rightDriveMotor.getCurrentPosition());
+            log("left", "%.2f", left);
+            log("right", "%.2f", right);
 
-            telemetry.addData("rightClaw position:", "%.2f", robot.rightClaw.getPosition());
-            telemetry.addData("leftClaw position:", "%.2f", robot.leftClaw.getPosition());
-            telemetry.addData("tubeServo position:", "%.2f", robot.tubeServo.getPosition());
-            telemetry.addData("right", "%.2f", right);
+            log("claw", "Offset = %.2f", clawOffset);
+            log("rightClaw position:", "%.2f", robot.rightClaw.getPosition());
+            log("leftClaw position:", "%.2f", robot.leftClaw.getPosition());
+            log("tubeServo position:", "%.2f", robot.tubeServo.getPosition());
 //
-            telemetry.addData("Raw", robot.opticalDistanceSensor.getRawLightDetected());
-            telemetry.addData("Normal", robot.opticalDistanceSensor.getLightDetected());
+            log("Raw", robot.opticalDistanceSensor.getRawLightDetected());
+            log("Normal", robot.opticalDistanceSensor.getLightDetected());
 
             if (robot.irSeekerSensor.signalDetected()) {
-                telemetry.addData("Angle", robot.irSeekerSensor.getAngle());
-                telemetry.addData("Strength", robot.irSeekerSensor.getStrength());
+                log("Angle", robot.irSeekerSensor.getAngle());
+                log("Strength", robot.irSeekerSensor.getStrength());
             } else {
-                telemetry.addData("Seeker", "Signal Lost");
+                log("Seeker", "Signal Lost");
             }
 
             if (robot.touchSensor.isPressed()) {
-                telemetry.addData("Touch", "Is Pressed");
+                log("Touch", "Is Pressed");
             } else {
-                telemetry.addData("Touch", "Is Not Pressed");
+                log("Touch", "Is Not Pressed");
             }
 
             telemetry.update();

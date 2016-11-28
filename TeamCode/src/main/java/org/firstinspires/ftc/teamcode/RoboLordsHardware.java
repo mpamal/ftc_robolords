@@ -1,6 +1,8 @@
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IrSeekerSensor;
 import com.qualcomm.robotcore.hardware.OpticalDistanceSensor;
@@ -21,8 +23,8 @@ public class RoboLordsHardware {
     //    Motors
     public DcMotor leftDriveMotor = null; //left_drive
     public DcMotor rightDriveMotor = null; //right_drive
-//    public DcMotor throwMotor = null; //throw_motor
-//    public DcMotor pickupMotor = null; //pickup_motor
+    public DcMotor launchMotor = null; //throw_motor
+    public DcMotor pickupMotor = null; //pickup_motor
 //    public DcMotor  armMotor    = null;
 
     //    Servos
@@ -34,15 +36,18 @@ public class RoboLordsHardware {
     public OpticalDistanceSensor opticalDistanceSensor = null;
     public IrSeekerSensor irSeekerSensor = null;
     public TouchSensor touchSensor = null;
+    public ColorSensor colorSensor;
 
     //    Initial configuration values
     public static final double TUBE_SERVO_POSITION_START = 0.0;
     public static final double TUBE_SERVO_POSITION_DEGREE_45 = 0.25;
     public static final double TUBE_SERVO_POSITION_DEGREE_90 = 0.5;
-    public static final double TUBE_SERVO_POSITION_DEGREE_180 = 1.0;
+    public static final double TUBE_SERVO_POSITION_DEGREE_180 = 0.8;
     public static final double MID_SERVO = 0.5;
     public static final double ARM_UP_POWER = 0.45;
     public static final double ARM_DOWN_POWER = -0.45;
+    public static final double MOTOR_FULL_POWER_FORWARD = 1;
+    public static final double MOTOR_FULL_POWER_REVERSE = -1;
 
     /* local OpMode members. */
     HardwareMap hwMap = null;
@@ -62,10 +67,10 @@ public class RoboLordsHardware {
         leftDriveMotor = hwMap.dcMotor.get("left_drive");
         rightDriveMotor = hwMap.dcMotor.get("right_drive");
 
-//        throwMotor = hwMap.dcMotor.get("throw_motor");
-//        pickupMotor = hwMap.dcMotor.get("pickup_motor");
+        launchMotor = hwMap.dcMotor.get("launch_motor");
+        pickupMotor = hwMap.dcMotor.get("pickup_motor");
 
-        leftDriveMotor.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
+        leftDriveMotor.setDirection(DcMotor.Direction.REVERSE); // Set to REVERSE if using AndyMark motors
         rightDriveMotor.setDirection(DcMotor.Direction.FORWARD);// Set to FORWARD if using AndyMark motors
 //        throwMotor.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
 //        pickupMotor.setDirection(DcMotor.Direction.FORWARD);// Set to FORWARD if using AndyMark motors
@@ -80,8 +85,8 @@ public class RoboLordsHardware {
         // May want to use RUN_USING_ENCODERS if encoders are installed.
         leftDriveMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         rightDriveMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-//        throwMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-//        pickupMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        launchMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        pickupMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         // Define and initialize ALL installed servos.
         tubeServo = hwMap.servo.get("tube_servo");
@@ -92,11 +97,12 @@ public class RoboLordsHardware {
 
         leftClaw.setPosition(MID_SERVO);
         rightClaw.setPosition(MID_SERVO);
-
 //        Define and intialize the sensors
         opticalDistanceSensor = hwMap.opticalDistanceSensor.get("ods");
         irSeekerSensor = hwMap.irSeekerSensor.get("irs");
         touchSensor = hwMap.touchSensor.get("touch_sensor");
+
+        colorSensor = hwMap.colorSensor.get("color_sensor");
     }
 
     /***
