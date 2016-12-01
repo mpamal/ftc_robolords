@@ -10,7 +10,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 public class AutoPushCapballAndParkAtCenterVortex extends RoboLordsLinearOpMode {
     private static final double DRIVE_SLOW_SPEED = 0.75;
     private static final double DRIVE_NORMAL_SPEED = 1.0;
-    private static final double DRIVE_HIGH_SPEED = 1.5;
+    private static final double DRIVE_HIGH_SPEED = 2.0;
     private static final double TURN_SPEED = 0.75;
 
     @Override

@@ -80,6 +80,7 @@ public class TeleopDrive extends RoboLordsLinearOpMode {
             //launch and pickup
             if (gamepad2.right_bumper) {
                 robot.launchMotor.setPower(RoboLordsHardware.MOTOR_FULL_POWER_FORWARD);
+//                robot.pickupMotor.setPower(RoboLordsHardware.MOTOR_FULL_POWER_FORWARD);
             } else if (gamepad2.left_bumper) {
                 robot.launchMotor.setPower(RoboLordsHardware.MOTOR_FULL_POWER_REVERSE);
             }
