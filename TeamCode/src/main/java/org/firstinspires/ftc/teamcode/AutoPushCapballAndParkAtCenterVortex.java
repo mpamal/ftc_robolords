@@ -8,10 +8,10 @@ import com.qualcomm.robotcore.hardware.DcMotor;
  */
 @Autonomous(name = "Blue:01: Push Capball & Park At Center Vortex", group = "RoboLords")
 public class AutoPushCapballAndParkAtCenterVortex extends RoboLordsLinearOpMode {
-    private static final double DRIVE_SLOW_SPEED = 0.125;
-    private static final double DRIVE_NORMAL_SPEED = 0.5;
-    private static final double DRIVE_HIGH_SPEED = 0.75;
-    private static final double TURN_SPEED = 0.5;
+    private static final double DRIVE_SLOW_SPEED = 0.75;
+    private static final double DRIVE_NORMAL_SPEED = 1.0;
+    private static final double DRIVE_HIGH_SPEED = 1.5;
+    private static final double TURN_SPEED = 0.75;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -45,7 +45,7 @@ public class AutoPushCapballAndParkAtCenterVortex extends RoboLordsLinearOpMode 
         // Note: Reverse movement is obtained by setting a negative distance (not speed)
         encoderDrive(DRIVE_SLOW_SPEED, 48, 48, 10.0);  // S1: Forward 48 Inches with 10 Sec timeout
         encoderDrive(TURN_SPEED, -24, 24, 4.0);  // S2: Turn Left 12 Inches with 4 Sec timeout
-        enableTouchSensor(true);
+        enableOpticalDistanceSensor(true);
         encoderDrive(DRIVE_SLOW_SPEED, 36, 36, 10.0);  // S2: Turn Right 12 Inches with 4 Sec timeout
         if (robot.touchSensor.isPressed()) {
             encoderDrive(DRIVE_SLOW_SPEED, -4, -4, 4.0);

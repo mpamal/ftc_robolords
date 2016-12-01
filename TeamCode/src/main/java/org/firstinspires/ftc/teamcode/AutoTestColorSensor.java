@@ -8,10 +8,10 @@ import com.qualcomm.robotcore.hardware.DcMotor;
  */
 @Autonomous(name = "Auto: Test Color Sensor", group = "RoboLords")
 public class AutoTestColorSensor extends RoboLordsLinearOpMode {
-    private static final double DRIVE_SLOW_SPEED = 0.125;
-    private static final double DRIVE_NORMAL_SPEED = 0.5;
-    private static final double DRIVE_HIGH_SPEED = 0.75;
-    private static final double TURN_SPEED = 0.5;
+    private static final double DRIVE_SLOW_SPEED = 0.5;
+    private static final double DRIVE_NORMAL_SPEED = 0.75;
+    private static final double DRIVE_HIGH_SPEED = 1.0;
+    private static final double TURN_SPEED = 0.75;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -46,12 +46,13 @@ public class AutoTestColorSensor extends RoboLordsLinearOpMode {
         disableAllSensors();
         enableColorSensor(true);
         encoderDrive(DRIVE_SLOW_SPEED, 48, 48, 10.0);  // S1: Forward 48 Inches with 10 Sec timeout
-        if (isWhiteLineDetected()) {
+        if (isBlueLightDetected() || isWhiteLightDetected()) {
             disableAllSensors();
-            encoderDrive(DRIVE_SLOW_SPEED, 12, 12, 4.0);
+//            encoderDrive(DRIVE_SLOW_SPEED, 12, 12, 4.0);
             encoderDrive(TURN_SPEED, -24, 24, 4.0);
             enableTouchSensor(true);
-            encoderDrive(DRIVE_SLOW_SPEED, 24, 24, 4.0);
+            encoderDrive(DRIVE_NORMAL_SPEED, 24, 24, 4.0);
+            //check if blue beacon is on. If not backup and press again after 5 seconds
         }
         disableAllSensors();
 

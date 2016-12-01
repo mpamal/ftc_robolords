@@ -29,6 +29,7 @@ public abstract class RoboLordsLinearOpMode extends LinearOpMode {
 
     private boolean useTouchSensor = false;
     private boolean useColorSensor = false;
+    private boolean useOpticalDistanceSensor = false;
 
     protected void encoderDrive(double speed,
                                 double leftInches, double rightInches,
@@ -54,6 +55,9 @@ public abstract class RoboLordsLinearOpMode extends LinearOpMode {
             robot.leftDriveMotor.setPower(Math.abs(speed));
             robot.rightDriveMotor.setPower(Math.abs(speed));
 
+            log("DrivePath", "Running to %7d :%7d", newLeftTarget, newRightTarget);
+            log("DrivePath", "Current pos %7d :%7d", robot.leftDriveMotor.getCurrentPosition(), robot.rightDriveMotor.getCurrentPosition());
+
             // keep looping while we are still active, and there is time left, and both motors are running.
             while (opModeIsActive() &&
                     (runtime.seconds() < timeoutSeconds) &&
@@ -61,27 +65,33 @@ public abstract class RoboLordsLinearOpMode extends LinearOpMode {
                     ) {
 
                 // Display it for the driver.
-                int leftMotorCurrentPosition = robot.leftDriveMotor.getCurrentPosition();
-                int rightMotorCurrentPosition = robot.rightDriveMotor.getCurrentPosition();
 
-                log("Path1", "Running to %7d :%7d", newLeftTarget, newRightTarget);
-                log("Path2", "Running at %7d :%7d", leftMotorCurrentPosition, rightMotorCurrentPosition);
-                log("Runtime secs:time-", "%7f : %7f", runtime.seconds(), runtime.time());
+//                log("Path1", "Running to %7d :%7d", newLeftTarget, newRightTarget);
+//                log("Path2", "Running at %7d :%7d", leftMotorCurrentPosition, rightMotorCurrentPosition);
+//                log("Runtime secs:time-", "%7f : %7f", runtime.seconds(), runtime.time());
 
                 if (useTouchSensor && robot.touchSensor.isPressed()) {
                     log("Touch", "Is Pressed. Now stopping robot");
                     break;
                 }
 
-                if (useColorSensor && isWhiteLineDetected()) {
+                if (useColorSensor && isWhiteLightDetected()) {
                     log("Color", "White line detected. Now stopping robot");
                     break;
                 }
 
-                telemetry.update();
+                if (useOpticalDistanceSensor && isObstacleDetected()) {
+                    log("ODS", "Obstacle Detected. Stopping robot");
+                    break;
+                }
+
                 // Allow time for other processes to run.
                 idle();
             }
+
+            log("DrivePath", "Reached to %7d :%7d", robot.leftDriveMotor.getCurrentPosition(), robot.rightDriveMotor.getCurrentPosition());
+            log("Runtime secs:", "%7f", runtime.seconds());
+            telemetry.update();
 
             // Stop all motion;
             robot.leftDriveMotor.setPower(0);
@@ -95,9 +105,22 @@ public abstract class RoboLordsLinearOpMode extends LinearOpMode {
         }
     }
 
+    protected void log(String caption, String format, Object... args){
+        String logMsg = caption + ":" + String.format(format, args);
+        Log.v("ROBOLORDS", logMsg);
+        telemetry.addData(caption, format, args);
+    }
+
+    protected void log(String caption, Object msg){
+        String logMsg = caption + ":" + msg;
+        Log.v("ROBOLORDS", logMsg);
+        telemetry.addData(caption, msg);
+    }
+
     protected void disableAllSensors() {
         useTouchSensor = false;
         useColorSensor = false;
+        useOpticalDistanceSensor = false;
         robot.colorSensor.enableLed(false);
     }
 
@@ -110,7 +133,11 @@ public abstract class RoboLordsLinearOpMode extends LinearOpMode {
         this.useColorSensor = isSensorEnabled;
     }
 
-    protected boolean isWhiteLineDetected() {
+    protected void enableOpticalDistanceSensor(boolean isSensorEnabled) {
+        this.useOpticalDistanceSensor = isSensorEnabled;
+    }
+
+    protected boolean isWhiteLightDetected() {
         boolean isWhiteDetected = false;
         if (robot.colorSensor.red() > RED_DETECTION_INTENSITY
                 && robot.colorSensor.green() > GREEN_DETECTION_INTENSITY
@@ -125,15 +152,20 @@ public abstract class RoboLordsLinearOpMode extends LinearOpMode {
         return isWhiteDetected;
     }
 
-    protected void log(String caption, String format, Object... args){
-        String logMsg = caption + ":" + String.format(format, args);
-        Log.v("ROBOLORDS", logMsg);
-        telemetry.addData(caption, format, args);
+    protected boolean isBlueLightDetected() {
+        boolean isBlueDetected = false;
+        if (robot.colorSensor.blue() > BLUE_DETECTION_INTENSITY) {
+            isBlueDetected = true;
+        }
+        // send the info back to driver station using telemetry function.
+        log("Clear", robot.colorSensor.alpha());
+        log("Red  ", robot.colorSensor.red());
+        log("Green", robot.colorSensor.green());
+        log("Blue ", robot.colorSensor.blue());
+        return isBlueDetected;
     }
 
-    protected void log(String caption, Object msg){
-        String logMsg = caption + ":" + msg != null ? msg.toString() : "null";
-        Log.v("ROBOLORDS", logMsg);
-        telemetry.addData(caption, msg);
+    protected boolean isObstacleDetected() {
+        return robot.opticalDistanceSensor.getRawLightDetected() > 1.2;
     }
 }
