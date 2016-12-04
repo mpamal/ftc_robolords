@@ -17,8 +17,8 @@ import com.qualcomm.robotcore.util.Range;
 public class TeleopDrive extends RoboLordsLinearOpMode {
     double clawOffset = 0;                       // Servo mid position
     final double CLAW_SPEED = 0.02;                   // sets rate to move servo
-    static final double DRIVE_SPEED_MIN = -1;
-    static final double DRIVE_SPEED_MAX = 1;
+    static final double DRIVE_SPEED_MIN = -0.5;
+    static final double DRIVE_SPEED_MAX = 0.5;
 
     @Override
     public void runOpMode() throws InterruptedException {

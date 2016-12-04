@@ -8,31 +8,22 @@ import com.qualcomm.robotcore.hardware.DcMotor;
  */
 @Autonomous(name = "Blue:01: Press Beacon and Push Capball", group = "RoboLords")
 public class AutoPressBeaconAndPushCapball extends RoboLordsLinearOpMode {
-    private static final double DRIVE_SLOW_SPEED = 0.75;
-    private static final double DRIVE_NORMAL_SPEED = 0.75;
+    private static final double DRIVE_SLOW_SPEED = 0.25;
+    private static final double DRIVE_NORMAL_SPEED = 0.5;
     private static final double DRIVE_HIGH_SPEED = 1.0;
-    private static final double TURN_SPEED = 0.75;
+    private static final double TURN_SPEED = 0.5;
 
     @Override
     public void runOpMode() throws InterruptedException {
-        double leftPower;
-        double rightPower;
-        double max;
+        double timeoutSeconds;
 
         robot.init(hardwareMap);
 
         log("Status", "Resetting Encoders");
         telemetry.update();
-
-        robot.leftDriveMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        robot.rightDriveMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        idle();
-
-        robot.leftDriveMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        robot.rightDriveMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        resetEncoders();
 
         log("COUNTS_PER_INCH", "%7f", COUNTS_PER_INCH);
-
         // Send telemetry message to indicate successful Encoder reset
         log("Path0", "Starting at %7d :%7d",
                 robot.leftDriveMotor.getCurrentPosition(),
@@ -42,9 +33,29 @@ public class AutoPressBeaconAndPushCapball extends RoboLordsLinearOpMode {
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
 
-        // Note: Reverse movement is obtained by setting a negative distance (not speed)
-        encoderDrive(DRIVE_NORMAL_SPEED, 170, 170, 30.0);  // S1: Forward 48 Inches with 10 Sec timeout
-        idle();
+        timeoutSeconds = 25.0;
+        runtime.reset();
+        enableTouchSensor(true);
+        enableColorSensor(true);
+        encoderDrive(DRIVE_SLOW_SPEED, 125);
+        while (opModeIsActive() && isRedLightDetected() && runtime.seconds() < timeoutSeconds) {
+            sleep(1500);
+            if (isBlueLightDetected()) {
+                break;
+            }
+            enableTouchSensor(false);
+            encoderDrive(DRIVE_SLOW_SPEED, -6);
+            sleep(1000);
+            enableTouchSensor(true);
+            encoderDrive(DRIVE_NORMAL_SPEED, 10);
+            //check if blue beacon is on. If not backup and press again after 5 seconds
+        }
+
+        enableTouchSensor(false);
+        encoderDrive(DRIVE_SLOW_SPEED, -12);
+        encoderDriveTurnLeft(TURN_SPEED);
+//        encoderDriveTurnRight(TURN_SPEED);
+
 //        encoderDrive(DRIVE_NORMAL_SPEED, -75, 75, 30.0);  // S2: Turn Left 12 Inches with 4 Sec timeout
 //        idle();
 //        encoderDrive(TURN_SPEED, 12, -12, 30.0);  // S2: Turn Left 12 Inches with 4 Sec timeout

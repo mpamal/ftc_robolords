@@ -6,7 +6,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 /**
  * Created by RoboLords
  */
-@Autonomous(name = "Blue:01: Push Capball & Park At Center Vortex", group = "RoboLords")
+@Autonomous(name = "Blue:02: Push Capball & Park At Center Vortex", group = "RoboLords")
 public class AutoPushCapballAndParkAtCenterVortex extends RoboLordsLinearOpMode {
     private static final double DRIVE_SLOW_SPEED = 0.75;
     private static final double DRIVE_NORMAL_SPEED = 1.0;
