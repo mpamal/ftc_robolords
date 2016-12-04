@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IrSeekerSensor;
 import com.qualcomm.robotcore.hardware.OpticalDistanceSensor;
@@ -23,8 +22,10 @@ public class RoboLordsHardware {
     //    Motors
     public DcMotor leftDriveMotor = null; //left_drive
     public DcMotor rightDriveMotor = null; //right_drive
-    public DcMotor launchMotor = null; //throw_motor
-    public DcMotor pickupMotor = null; //pickup_motor
+    public DcMotor launchMotor1 = null; //throw_motor
+    public DcMotor launchMotor2 = null; //throw_motor
+    public DcMotor pickupMotor1 = null; //pickup_motor
+    public DcMotor pickupMotor2 = null; //pickup_motor
 //    public DcMotor  armMotor    = null;
 
     //    Servos
@@ -67,26 +68,30 @@ public class RoboLordsHardware {
         leftDriveMotor = hwMap.dcMotor.get("left_drive");
         rightDriveMotor = hwMap.dcMotor.get("right_drive");
 
-        launchMotor = hwMap.dcMotor.get("launch_motor");
-        pickupMotor = hwMap.dcMotor.get("pickup_motor");
+        launchMotor1 = hwMap.dcMotor.get("launch_motor1");
+        launchMotor2 = hwMap.dcMotor.get("launch_motor2");
+        pickupMotor1 = hwMap.dcMotor.get("pickup_motor1");
+        pickupMotor2 = hwMap.dcMotor.get("pickup_motor2");
 
         leftDriveMotor.setDirection(DcMotor.Direction.REVERSE); // Set to REVERSE if using AndyMark motors
         rightDriveMotor.setDirection(DcMotor.Direction.FORWARD);// Set to FORWARD if using AndyMark motors
 //        throwMotor.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
-//        pickupMotor.setDirection(DcMotor.Direction.FORWARD);// Set to FORWARD if using AndyMark motors
+//        pickupMotor1.setDirection(DcMotor.Direction.FORWARD);// Set to FORWARD if using AndyMark motors
 
         // Set all motors to zero power
         leftDriveMotor.setPower(0);
         rightDriveMotor.setPower(0);
 //        throwMotor.setPower(0);
-//        pickupMotor.setPower(0);
+//        pickupMotor1.setPower(0);
 
         // Set all motors to run without encoders.
         // May want to use RUN_USING_ENCODERS if encoders are installed.
         leftDriveMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         rightDriveMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        launchMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        pickupMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        launchMotor1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        launchMotor2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        pickupMotor1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        pickupMotor2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         // Define and initialize ALL installed servos.
         tubeServo = hwMap.servo.get("tube_servo");

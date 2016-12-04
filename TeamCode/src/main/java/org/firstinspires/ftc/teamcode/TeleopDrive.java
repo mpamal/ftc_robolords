@@ -1,6 +1,5 @@
 package org.firstinspires.ftc.teamcode;
 
-import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.util.Range;
 
@@ -78,11 +77,17 @@ public class TeleopDrive extends RoboLordsLinearOpMode {
 //            }
 
             //launch and pickup
-            if (gamepad2.right_bumper) {
-                robot.launchMotor.setPower(RoboLordsHardware.MOTOR_FULL_POWER_FORWARD);
-//                robot.pickupMotor.setPower(RoboLordsHardware.MOTOR_FULL_POWER_FORWARD);
-            } else if (gamepad2.left_bumper) {
-                robot.launchMotor.setPower(RoboLordsHardware.MOTOR_FULL_POWER_REVERSE);
+            if (gamepad2.left_bumper) {
+                robot.pickupMotor1.setPower(RoboLordsHardware.MOTOR_FULL_POWER_FORWARD);
+                robot.pickupMotor2.setPower(RoboLordsHardware.MOTOR_FULL_POWER_REVERSE);
+            } else if (gamepad2.right_bumper) {
+                robot.launchMotor1.setPower(RoboLordsHardware.MOTOR_FULL_POWER_FORWARD);
+                robot.launchMotor2.setPower(RoboLordsHardware.MOTOR_FULL_POWER_REVERSE);
+            } else {
+                robot.pickupMotor1.setPower(0);
+                robot.pickupMotor2.setPower(0);
+                robot.launchMotor1.setPower(0);
+                robot.launchMotor2.setPower(0);
             }
 
             // Move both servos to new position.  Assume servos are mirror image of each other.

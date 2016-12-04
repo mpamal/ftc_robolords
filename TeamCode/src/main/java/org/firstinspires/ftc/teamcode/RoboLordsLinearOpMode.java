@@ -17,7 +17,7 @@ public abstract class RoboLordsLinearOpMode extends LinearOpMode {
 
     //drive motor settings
     private static final double COUNTS_PER_MOTOR_REV = 420;
-    private static final double DRIVE_GEAR_REDUCTION = 2.0;     // This is < 1.0 if geared UP
+    private static final double DRIVE_GEAR_REDUCTION = 7.0;     // This is < 1.0 if geared UP
     private static final double WHEEL_DIAMETER_INCHES = 4.0;     // For figuring circumference
     protected static final double COUNTS_PER_INCH = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
             (WHEEL_DIAMETER_INCHES * 3.1415);
@@ -85,13 +85,17 @@ public abstract class RoboLordsLinearOpMode extends LinearOpMode {
                     break;
                 }
 
+                log("left motor position:", "%7d", robot.leftDriveMotor.getCurrentPosition());
+                log("right motor position:", "%7d", robot.rightDriveMotor.getCurrentPosition());
+                telemetry.update();
+
                 // Allow time for other processes to run.
                 idle();
             }
 
-            log("DrivePath", "Reached to %7d :%7d", robot.leftDriveMotor.getCurrentPosition(), robot.rightDriveMotor.getCurrentPosition());
-            log("Runtime secs:", "%7f", runtime.seconds());
-            telemetry.update();
+//            log("DrivePath", "Reached to %7d :%7d", robot.leftDriveMotor.getCurrentPosition(), robot.rightDriveMotor.getCurrentPosition());
+//            log("Runtime secs:", "%7f", runtime.seconds());
+//            telemetry.update();
 
             // Stop all motion;
             robot.leftDriveMotor.setPower(0);
