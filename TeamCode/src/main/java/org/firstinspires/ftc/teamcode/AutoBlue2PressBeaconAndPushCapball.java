@@ -42,6 +42,7 @@ public class AutoBlue2PressBeaconAndPushCapball extends RoboLordsLinearOpMode {
 
         while (opModeIsActive() && !isBlueOrRedLightDetected()) {
             enableTouchSensor(false);
+            enableOpticalDistanceSensor(false);
             encoderDrive(DRIVE_SLOW_SPEED, -6);
             moveLeft(DRIVE_SLOW_SPEED);
             while (opModeIsActive() && !isObstacleDetected()) {
@@ -49,11 +50,12 @@ public class AutoBlue2PressBeaconAndPushCapball extends RoboLordsLinearOpMode {
                 enableOpticalDistanceSensor(true);
                 encoderDrive(DRIVE_SLOW_SPEED, 12);
             }
-            line.addData("Moving left, Red or blue detected %d", isBlueOrRedLightDetected());
+
+            line.addData("Moving left, Red or blue detected:", isBlueOrRedLightDetected());
             telemetry.update();
         }
 
-        line.addData("Path: detected red or blue: %d", isBlueOrRedLightDetected());
+        line.addData("Beacon detected red or blue:", isBlueOrRedLightDetected());
         telemetry.update();
 
         disableAllSensors();
@@ -72,6 +74,9 @@ public class AutoBlue2PressBeaconAndPushCapball extends RoboLordsLinearOpMode {
             encoderDrive(DRIVE_NORMAL_SPEED, 36);
             //check if blue beacon is on. If not backup and press again after 5 seconds
         }
+        line.addData("Beacon detected blue:", isBlueLightDetected());
+        telemetry.update();
+
         disableAllSensors();
         //backup and push capball
         encoderDrive(DRIVE_SLOW_SPEED, -12);

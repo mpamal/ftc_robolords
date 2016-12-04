@@ -78,7 +78,7 @@ public abstract class RoboLordsLinearOpMode extends LinearOpMode {
 //                    break;
 //                }
 
-                if (useOpticalDistanceSensor && isObstacleDetected()) {
+                if (useOpticalDistanceSensor && isODSDetected()) {
                     log("ODS", "Obstacle Detected. Stopping robot");
                     break;
                 }
@@ -246,6 +246,10 @@ public abstract class RoboLordsLinearOpMode extends LinearOpMode {
     }
 
     protected boolean isObstacleDetected() {
-        return isTouchSensorPressed() || robot.opticalDistanceSensor.getRawLightDetected() > 1.2;
+        return isTouchSensorPressed() || isODSDetected();
+    }
+
+    protected boolean isODSDetected() {
+        return robot.opticalDistanceSensor.getRawLightDetected() > 1.2;
     }
 }
