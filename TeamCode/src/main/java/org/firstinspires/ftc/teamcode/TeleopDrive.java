@@ -78,21 +78,17 @@ public class TeleopDrive extends RoboLordsLinearOpMode {
 
             //launch and pickup
             if (gamepad2.left_bumper) {
-                robot.pickupMotor1.setPower(RoboLordsHardware.MOTOR_FULL_POWER_FORWARD);
-                robot.pickupMotor2.setPower(RoboLordsHardware.MOTOR_FULL_POWER_REVERSE);
+                pickupParticles();
             } else if (gamepad2.right_bumper) {
-                robot.launchMotor1.setPower(RoboLordsHardware.MOTOR_FULL_POWER_FORWARD);
-                robot.launchMotor2.setPower(RoboLordsHardware.MOTOR_FULL_POWER_REVERSE);
+                launchParticles();
             } else {
-                robot.pickupMotor1.setPower(0);
-                robot.pickupMotor2.setPower(0);
-                robot.launchMotor1.setPower(0);
-                robot.launchMotor2.setPower(0);
+                stopPickup();
+                stopLaunching();
             }
 
             // Move both servos to new position.  Assume servos are mirror image of each other.
-            clawOffset = Range.clip(clawOffset, -0.5, 0.5);
-            robot.leftClaw.setPosition(robot.MID_SERVO + clawOffset);
+//            clawOffset = Range.clip(clawOffset, -0.5, 0.5);
+//            robot.leftClaw.setPosition(robot.MID_SERVO + clawOffset);
 //            robot.tubeServo.setPosition(robot.MID_SERVO - clawOffset);
 //            robot.tubeServo.setPosition(robot.TUBE_SERVO_POSITION_START);
 
@@ -114,7 +110,6 @@ public class TeleopDrive extends RoboLordsLinearOpMode {
 //                robot.rightClaw.setPosition(robot.MID_SERVO);
                 robot.tubeServo.setPosition(robot.TUBE_SERVO_POSITION_DEGREE_180);
             }
-
 
             // Send telemetry message to signify robot running;
             log("left motor position:", "%7d", robot.leftDriveMotor.getCurrentPosition());

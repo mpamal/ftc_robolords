@@ -16,6 +16,8 @@ public abstract class RoboLordsLinearOpMode extends LinearOpMode {
     private static final double WHEEL_DIAMETER_INCHES = 4.0;     // For figuring circumference
     protected static final double COUNTS_PER_INCH = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
             (WHEEL_DIAMETER_INCHES * 3.1415);
+    protected static double TURN_90_DEGREES_DISTANCE = 12;
+    protected static double TURN_20_DEGREES_DISTANCE = 5;
 
     //color sensor settings
     private static int COLOR_DETECTION_INTENSITY = 10;
@@ -23,6 +25,7 @@ public abstract class RoboLordsLinearOpMode extends LinearOpMode {
     private boolean useTouchSensor = false;
     private boolean useColorSensor = false;
     private boolean useOpticalDistanceSensor = false;
+
 
     protected void encoderDrive(double speed,
                                 double leftInches, double rightInches,
@@ -32,6 +35,9 @@ public abstract class RoboLordsLinearOpMode extends LinearOpMode {
 
         // Ensure that the opmode is still active
         if (opModeIsActive()) {
+            robot.leftDriveMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+            robot.rightDriveMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+
             // Determine new target position, and pass to motor controller
             newLeftTarget = robot.leftDriveMotor.getCurrentPosition() + (int) (leftInches * COUNTS_PER_INCH);
             newRightTarget = robot.rightDriveMotor.getCurrentPosition() + (int) (rightInches * COUNTS_PER_INCH);
@@ -47,8 +53,8 @@ public abstract class RoboLordsLinearOpMode extends LinearOpMode {
             runtime.reset();
             driveForward(speed);
 
-            log("DrivePath", "Running to %7d :%7d", newLeftTarget, newRightTarget);
-            log("DrivePath", "Current pos %7d :%7d", robot.leftDriveMotor.getCurrentPosition(), robot.rightDriveMotor.getCurrentPosition());
+//            log("DrivePath", "Running to %7d :%7d", newLeftTarget, newRightTarget);
+//            log("DrivePath", "Current pos %7d :%7d", robot.leftDriveMotor.getCurrentPosition(), robot.rightDriveMotor.getCurrentPosition());
 
             // keep looping while we are still active, and there is time left, and both motors are running.
             while (opModeIsActive() &&
@@ -82,8 +88,8 @@ public abstract class RoboLordsLinearOpMode extends LinearOpMode {
                 double leftDrivePosition = robot.leftDriveMotor.getCurrentPosition() / COUNTS_PER_INCH;
                 double rightDrivePosition = robot.rightDriveMotor.getCurrentPosition() / COUNTS_PER_INCH;
 
-                log("DrivePath", "Current pos %7f :%7f", leftDrivePosition, rightDrivePosition);
-                telemetry.update();
+//                log("DrivePath", "Current left: %7f, right: %7f", leftDrivePosition, rightDrivePosition);
+//                telemetry.update();
 
                 // Allow time for other processes to run.
                 idle();
@@ -99,7 +105,7 @@ public abstract class RoboLordsLinearOpMode extends LinearOpMode {
             robot.leftDriveMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
             robot.rightDriveMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
-            sleep(250);   // optional pause after each move
+            sleep(500);   // optional pause after each move
         }
     }
 
@@ -108,11 +114,18 @@ public abstract class RoboLordsLinearOpMode extends LinearOpMode {
     }
 
     protected void encoderDriveTurnLeft(double speed) throws InterruptedException {
-        encoderDrive(speed, -24, 24, 30.0);
+        encoderDrive(speed, -TURN_90_DEGREES_DISTANCE, TURN_90_DEGREES_DISTANCE, 30.0);
     }
 
     protected void encoderDriveTurnRight(double speed) throws InterruptedException {
-        encoderDrive(speed, 24, -24, 30.0);
+        encoderDrive(speed, TURN_90_DEGREES_DISTANCE, -TURN_90_DEGREES_DISTANCE, 30.0);
+    }
+
+    protected void moveLeft(double speed) throws InterruptedException {
+        encoderDrive(speed, TURN_20_DEGREES_DISTANCE, -TURN_20_DEGREES_DISTANCE, 30.0);
+        encoderDrive(speed, -6);
+        encoderDrive(speed, -TURN_20_DEGREES_DISTANCE, TURN_20_DEGREES_DISTANCE, 30.0);
+        encoderDrive(speed, 6);
     }
 
     protected void driveForward(double power) {
@@ -137,6 +150,34 @@ public abstract class RoboLordsLinearOpMode extends LinearOpMode {
         telemetry.addData(caption, msg);
     }
 
+    protected void resetEncoders() throws InterruptedException {
+        robot.leftDriveMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.rightDriveMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        idle();
+        robot.leftDriveMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        robot.rightDriveMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+    }
+
+    protected void launchParticles() {
+        robot.launchMotor1.setPower(RoboLordsHardware.MOTOR_FULL_POWER_REVERSE);
+        robot.launchMotor1.setPower(RoboLordsHardware.MOTOR_FULL_POWER_FORWARD);
+    }
+
+    protected void pickupParticles() {
+        robot.pickupMotor1.setPower(RoboLordsHardware.MOTOR_FULL_POWER_FORWARD);
+        robot.pickupMotor2.setPower(RoboLordsHardware.MOTOR_FULL_POWER_REVERSE);
+    }
+
+    protected void stopPickup() {
+        robot.pickupMotor1.setPower(0);
+        robot.pickupMotor2.setPower(0);
+    }
+
+    protected void stopLaunching() {
+        robot.pickupMotor1.setPower(0);
+        robot.pickupMotor2.setPower(0);
+    }
+
     protected void disableAllSensors() {
         useTouchSensor = false;
         useColorSensor = false;
@@ -146,6 +187,10 @@ public abstract class RoboLordsLinearOpMode extends LinearOpMode {
 
     protected void enableTouchSensor(boolean isSensorEnabled) {
         this.useTouchSensor = isSensorEnabled;
+    }
+
+    protected boolean isTouchSensorPressed() {
+        return robot.touchSensor.isPressed();
     }
 
     protected void enableColorSensor(boolean isSensorEnabled) {
@@ -180,6 +225,10 @@ public abstract class RoboLordsLinearOpMode extends LinearOpMode {
         return isColorLightDetected("RED");
     }
 
+    protected boolean isBlueOrRedLightDetected() {
+        return isColorLightDetected("BLUE") || isColorLightDetected("RED");
+    }
+
     private boolean isColorLightDetected(String colorName) {
         boolean isColorDetected = false;
         if (colorName.equals("RED") && (robot.colorSensor.red() > COLOR_DETECTION_INTENSITY)) {
@@ -197,14 +246,6 @@ public abstract class RoboLordsLinearOpMode extends LinearOpMode {
     }
 
     protected boolean isObstacleDetected() {
-        return robot.opticalDistanceSensor.getRawLightDetected() > 1.2;
-    }
-
-    protected void resetEncoders() throws InterruptedException {
-        robot.leftDriveMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        robot.rightDriveMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        idle();
-        robot.leftDriveMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        robot.rightDriveMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+        return isTouchSensorPressed() || robot.opticalDistanceSensor.getRawLightDetected() > 1.2;
     }
 }

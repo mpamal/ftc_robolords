@@ -2,6 +2,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IrSeekerSensor;
 import com.qualcomm.robotcore.hardware.OpticalDistanceSensor;
@@ -47,8 +48,8 @@ public class RoboLordsHardware {
     public static final double MID_SERVO = 0.5;
     public static final double ARM_UP_POWER = 0.45;
     public static final double ARM_DOWN_POWER = -0.45;
-    public static final double MOTOR_FULL_POWER_FORWARD = 1;
-    public static final double MOTOR_FULL_POWER_REVERSE = -1;
+    public static final double MOTOR_FULL_POWER_FORWARD = 1.0;
+    public static final double MOTOR_FULL_POWER_REVERSE = -1.0;
 
     /* local OpMode members. */
     HardwareMap hwMap = null;
@@ -73,8 +74,8 @@ public class RoboLordsHardware {
         pickupMotor1 = hwMap.dcMotor.get("pickup_motor1");
         pickupMotor2 = hwMap.dcMotor.get("pickup_motor2");
 
-        leftDriveMotor.setDirection(DcMotor.Direction.REVERSE); // Set to REVERSE if using AndyMark motors
-        rightDriveMotor.setDirection(DcMotor.Direction.FORWARD);// Set to FORWARD if using AndyMark motors
+        leftDriveMotor.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
+        rightDriveMotor.setDirection(DcMotor.Direction.REVERSE);// Set to FORWARD if using AndyMark motors
 //        throwMotor.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
 //        pickupMotor1.setDirection(DcMotor.Direction.FORWARD);// Set to FORWARD if using AndyMark motors
 
