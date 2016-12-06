@@ -7,8 +7,8 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 /**
  * Created by RoboLords
  */
-@Autonomous(name = "Blue:02: Press Beacon and Push Capball", group = "RoboLords")
-public class AutoBlue2PressBeaconAndPushCapball extends RoboLordsLinearOpMode {
+@Autonomous(name = "Red:02: Press Beacon and Push Capball", group = "RoboLords")
+public class AutoRed2PressBeaconAndPushCapball extends RoboLordsLinearOpMode {
     private static final double DRIVE_SLOW_SPEED = 0.25;
     private static final double DRIVE_NORMAL_SPEED = 0.5;
     private static final double DRIVE_HIGH_SPEED = 1.0;
@@ -36,13 +36,10 @@ public class AutoBlue2PressBeaconAndPushCapball extends RoboLordsLinearOpMode {
         runtime.reset();
         enableColorSensor(true);
         encoderDrive(DRIVE_SLOW_SPEED, 36);
-        encoderDriveTurnRight(TURN_SPEED);
+        encoderDriveTurnLeft(TURN_SPEED);
         enableTouchSensor(true);
         encoderDrive(DRIVE_SLOW_SPEED, 60);
-<<<<<<< HEAD
 
-=======
->>>>>>> akash
         while (opModeIsActive() && !isBlueOrRedLightDetected()) {
             enableTouchSensor(false);
             enableOpticalDistanceSensor(false);
@@ -67,7 +64,7 @@ public class AutoBlue2PressBeaconAndPushCapball extends RoboLordsLinearOpMode {
 
         while (opModeIsActive() && isRedLightDetected() && runtime.seconds() < timeoutSeconds) {
             sleep(1000);
-            if (isBlueLightDetected()) {
+            if (isRedLightDetected()) {
                 break;
             }
             enableTouchSensor(false);
@@ -75,9 +72,9 @@ public class AutoBlue2PressBeaconAndPushCapball extends RoboLordsLinearOpMode {
             sleep(1000);
             enableTouchSensor(true);
             encoderDrive(DRIVE_NORMAL_SPEED, 36);
-            //check if blue beacon is on. If not backup and press again after 5 seconds
+            //check if red beacon is on. If not backup and press again after 5 seconds
         }
-        line.addData("Beacon detected blue:", isBlueLightDetected());
+        line.addData("Beacon detected red:", isRedLightDetected());
         telemetry.update();
 
         disableAllSensors();

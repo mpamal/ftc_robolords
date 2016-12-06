@@ -7,12 +7,12 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 /**
  * Created by RoboLords
  */
-@Autonomous(name = "Blue:02: Press Beacon and Push Capball", group = "RoboLords")
-public class AutoBlue2PressBeaconAndPushCapball extends RoboLordsLinearOpMode {
+@Autonomous(name = "Blue:04: Press Beacon and Push Capball", group = "RoboLords")
+public class AutoBlue04PressBeaconAndPushCapball extends RoboLordsLinearOpMode {
     private static final double DRIVE_SLOW_SPEED = 0.25;
     private static final double DRIVE_NORMAL_SPEED = 0.5;
     private static final double DRIVE_HIGH_SPEED = 1.0;
-    private static final double TURN_SPEED = 0.10;
+    private static final double TURN_SPEED = 0.25;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -34,16 +34,18 @@ public class AutoBlue2PressBeaconAndPushCapball extends RoboLordsLinearOpMode {
 
         timeoutSeconds = 20.0;
         runtime.reset();
-        enableColorSensor(true);
-        encoderDrive(DRIVE_SLOW_SPEED, 36);
+        disableAllSensors();
+        encoderDrive(DRIVE_NORMAL_SPEED, 34);
         encoderDriveTurnRight(TURN_SPEED);
+        encoderDrive(DRIVE_NORMAL_SPEED, 16);
+        encoderDriveTurnLeft(TURN_SPEED);
+        encoderDrive(DRIVE_NORMAL_SPEED, 10);
+        encoderDriveTurnRight(TURN_SPEED);
+        encoderDrive(DRIVE_SLOW_SPEED, 8);
+        enableOpticalDistanceSensor(true);
         enableTouchSensor(true);
-        encoderDrive(DRIVE_SLOW_SPEED, 60);
-<<<<<<< HEAD
-
-=======
->>>>>>> akash
-        while (opModeIsActive() && !isBlueOrRedLightDetected()) {
+        enableColorSensor(true);
+        while (opModeIsActive() && !isBlueOrRedLightDetected()){
             enableTouchSensor(false);
             enableOpticalDistanceSensor(false);
             encoderDrive(DRIVE_SLOW_SPEED, -6);

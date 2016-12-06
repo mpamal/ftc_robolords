@@ -174,8 +174,13 @@ public abstract class RoboLordsLinearOpMode extends LinearOpMode {
     }
 
     protected void stopLaunching() {
+<<<<<<< HEAD
         robot.pickupMotor1.setPower(0);
         robot.pickupMotor2.setPower(0);
+=======
+        robot.launchMotor1.setPower(0);
+        robot.launchMotor2.setPower(0);
+>>>>>>> akash
     }
 
     protected void disableAllSensors() {
