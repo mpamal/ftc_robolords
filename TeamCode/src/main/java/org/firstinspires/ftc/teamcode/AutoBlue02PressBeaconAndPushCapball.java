@@ -7,8 +7,8 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 /**
  * Created by RoboLords
  */
-@Autonomous(name = "Blue:04: Press Beacon and Push Capball", group = "RoboLords")
-public class AutoBlue04PressBeaconAndPushCapball extends RoboLordsLinearOpMode {
+@Autonomous(name = "Blue:02: Press Beacon and Push Capball", group = "RoboLords")
+public class AutoBlue02PressBeaconAndPushCapball extends RoboLordsLinearOpMode {
     private static final double DRIVE_SLOW_SPEED = 0.25;
     private static final double DRIVE_NORMAL_SPEED = 0.5;
     private static final double DRIVE_HIGH_SPEED = 1.0;

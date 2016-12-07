@@ -1,17 +1,18 @@
 package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
-import com.qualcomm.robotcore.hardware.DcMotor;
+
+import org.firstinspires.ftc.robotcore.external.Telemetry;
 
 /**
  * Created by RoboLords
  */
 @Autonomous(name = "Blue:01: Press Beacon and Push Capball", group = "RoboLords")
-public class AutoBlue1PressBeaconAndPushCapball extends RoboLordsLinearOpMode {
+public class AutoBlue01PressBeaconAndPushCapball extends RoboLordsLinearOpMode {
     private static final double DRIVE_SLOW_SPEED = 0.25;
-    private static final double DRIVE_NORMAL_SPEED = 0.5;
+    private static final double DRIVE_NORMAL_SPEED = 0.4;
     private static final double DRIVE_HIGH_SPEED = 1.0;
-    private static final double TURN_SPEED = 0.10;
+    private static final double TURN_SPEED = 0.25;
 
     @Override
     public void runOpMode() throws InterruptedException {
@@ -20,6 +21,9 @@ public class AutoBlue1PressBeaconAndPushCapball extends RoboLordsLinearOpMode {
         robot.init(hardwareMap);
 
 //        log("COUNTS_PER_INCH", "%7f", COUNTS_PER_INCH);
+        telemetry.setAutoClear(false);
+        Telemetry.Line line = telemetry.addLine("Path");
+
         log("Path0", "Starting at %7d :%7d",
                 robot.leftDriveMotor.getCurrentPosition(),
                 robot.rightDriveMotor.getCurrentPosition());
@@ -30,11 +34,42 @@ public class AutoBlue1PressBeaconAndPushCapball extends RoboLordsLinearOpMode {
 
         timeoutSeconds = 20.0;
         runtime.reset();
+        disableAllSensors();
+        enableOpticalDistanceSensor(true);
         enableTouchSensor(true);
-        enableColorSensor(true);
-        encoderDrive(DRIVE_SLOW_SPEED, 135);
+        encoderDrive(DRIVE_NORMAL_SPEED, 34);
+        encoderDriveTurnRight(TURN_SPEED);
+        encoderDrive(DRIVE_NORMAL_SPEED, 16);
+        encoderDriveTurnLeft(TURN_SPEED);
+        encoderDrive(DRIVE_NORMAL_SPEED, 10);
+        encoderDriveTurnRight(TURN_SPEED);
+        encoderDrive(DRIVE_SLOW_SPEED, 13);
+        enableOpticalDistanceSensor(true);
+        while (opModeIsActive() && !isBlueOrRedLightDetected()){
+            enableTouchSensor(false);
+            enableOpticalDistanceSensor(false);
+            enableColorSensor(true);
+            encoderDrive(DRIVE_SLOW_SPEED, -6);
+            moveLeft(DRIVE_SLOW_SPEED);
+            while (opModeIsActive() && !isObstacleDetected()) {
+                enableTouchSensor(true);
+                enableOpticalDistanceSensor(true);
+                encoderDrive(DRIVE_SLOW_SPEED, 12);
+            }
+
+            line.addData("Moving left, Red or blue detected:", isBlueOrRedLightDetected());
+            telemetry.update();
+        }
+
+        line.addData("Beacon detected red or blue:", isBlueOrRedLightDetected());
+        telemetry.update();
+
+        disableAllSensors();
+        enableTouchSensor(true);
+        encoderDrive(DRIVE_NORMAL_SPEED, 12);
+
         while (opModeIsActive() && isRedLightDetected() && runtime.seconds() < timeoutSeconds) {
-            sleep(1500);
+            sleep(1000);
             if (isBlueLightDetected()) {
                 break;
             }
@@ -45,6 +80,9 @@ public class AutoBlue1PressBeaconAndPushCapball extends RoboLordsLinearOpMode {
             encoderDrive(DRIVE_NORMAL_SPEED, 36);
             //check if blue beacon is on. If not backup and press again after 5 seconds
         }
+        line.addData("Beacon detected blue:", isBlueLightDetected());
+        telemetry.update();
+
         disableAllSensors();
         //backup and push capball
         encoderDrive(DRIVE_SLOW_SPEED, -12);

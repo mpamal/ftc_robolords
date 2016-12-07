@@ -16,7 +16,7 @@ public abstract class RoboLordsLinearOpMode extends LinearOpMode {
     private static final double WHEEL_DIAMETER_INCHES = 4.0;     // For figuring circumference
     protected static final double COUNTS_PER_INCH = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
             (WHEEL_DIAMETER_INCHES * 3.1415);
-    protected static double TURN_90_DEGREES_DISTANCE = 12;
+    protected static double TURN_90_DEGREES_DISTANCE = 11;
     protected static double TURN_20_DEGREES_DISTANCE = 5;
 
     //color sensor settings
@@ -174,13 +174,8 @@ public abstract class RoboLordsLinearOpMode extends LinearOpMode {
     }
 
     protected void stopLaunching() {
-<<<<<<< HEAD
-        robot.pickupMotor1.setPower(0);
-        robot.pickupMotor2.setPower(0);
-=======
         robot.launchMotor1.setPower(0);
         robot.launchMotor2.setPower(0);
->>>>>>> akash
     }
 
     protected void disableAllSensors() {

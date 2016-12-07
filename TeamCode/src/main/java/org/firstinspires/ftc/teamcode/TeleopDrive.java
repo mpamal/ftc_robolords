@@ -111,6 +111,14 @@ public class TeleopDrive extends RoboLordsLinearOpMode {
                 robot.tubeServo.setPosition(robot.TUBE_SERVO_POSITION_DEGREE_180);
             }
 
+            if (gamepad2.left_trigger > 0) {
+                robot.tubeServo.setPosition(robot.TUBE_SERVO_POSITION_DEGREE_45);
+            } else if (gamepad2.right_trigger > 0) {
+                robot.tubeServo.setPosition(robot.TUBE_SERVO_POSITION_DEGREE_180);
+            } else {
+//                robot.tubeServo.;
+            }
+
             // Send telemetry message to signify robot running;
             log("left motor position:", "%7d", robot.leftDriveMotor.getCurrentPosition());
             log("right motor position:", "%7d", robot.rightDriveMotor.getCurrentPosition());
