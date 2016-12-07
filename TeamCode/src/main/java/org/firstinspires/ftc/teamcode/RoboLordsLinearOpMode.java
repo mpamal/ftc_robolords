@@ -16,8 +16,9 @@ public abstract class RoboLordsLinearOpMode extends LinearOpMode {
     private static final double WHEEL_DIAMETER_INCHES = 4.0;     // For figuring circumference
     protected static final double COUNTS_PER_INCH = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
             (WHEEL_DIAMETER_INCHES * 3.1415);
-    protected static double TURN_90_DEGREES_DISTANCE = 11;
-    protected static double TURN_20_DEGREES_DISTANCE = 5;
+    protected static double TURN_90_DEGREES_DISTANCE = 10;
+    protected static double TURN_45_DEGREES_DISTANCE = 5;
+    protected static double TURN_TO_MOVE_LEFT_OR_RIGHT = 5;
 
     //color sensor settings
     private static int COLOR_DETECTION_INTENSITY = 10;
@@ -121,10 +122,25 @@ public abstract class RoboLordsLinearOpMode extends LinearOpMode {
         encoderDrive(speed, TURN_90_DEGREES_DISTANCE, -TURN_90_DEGREES_DISTANCE, 30.0);
     }
 
+    protected void encoderDriveTurn45Left(double speed) throws InterruptedException {
+        encoderDrive(speed, -TURN_45_DEGREES_DISTANCE, TURN_45_DEGREES_DISTANCE, 30.0);
+    }
+
+    protected void encoderDriveTurn45Right(double speed) throws InterruptedException {
+        encoderDrive(speed, TURN_45_DEGREES_DISTANCE, -TURN_45_DEGREES_DISTANCE, 30.0);
+    }
+
     protected void moveLeft(double speed) throws InterruptedException {
-        encoderDrive(speed, TURN_20_DEGREES_DISTANCE, -TURN_20_DEGREES_DISTANCE, 30.0);
+        encoderDrive(speed, TURN_TO_MOVE_LEFT_OR_RIGHT, -TURN_TO_MOVE_LEFT_OR_RIGHT, 30.0);
         encoderDrive(speed, -6);
-        encoderDrive(speed, -TURN_20_DEGREES_DISTANCE, TURN_20_DEGREES_DISTANCE, 30.0);
+        encoderDrive(speed, -TURN_TO_MOVE_LEFT_OR_RIGHT, TURN_TO_MOVE_LEFT_OR_RIGHT, 30.0);
+        encoderDrive(speed, 6);
+    }
+
+    protected void moveRight(double speed) throws InterruptedException {
+        encoderDrive(speed, -TURN_TO_MOVE_LEFT_OR_RIGHT, TURN_TO_MOVE_LEFT_OR_RIGHT, 30.0);
+        encoderDrive(speed, -6);
+        encoderDrive(speed, TURN_TO_MOVE_LEFT_OR_RIGHT, -TURN_TO_MOVE_LEFT_OR_RIGHT, 30.0);
         encoderDrive(speed, 6);
     }
 
