@@ -178,11 +178,22 @@ public abstract class RoboLordsLinearOpMode extends LinearOpMode {
 
     protected void launchParticles() {
         ElapsedTime launchTime = new ElapsedTime();
-        double liftBasketTimeout = 3.0;
+        double timeout = 3.0;
         robot.launchMotor1.setPower(RoboLordsHardware.MOTOR_FULL_POWER_FORWARD);
         robot.launchMotor2.setPower(RoboLordsHardware.MOTOR_FULL_POWER_REVERSE);
-        while (launchTime.seconds() < liftBasketTimeout) {
-            liftParticleBasket();
+        liftParticleBasket();
+        while (launchTime.seconds() < timeout) {
+            idle();
+        }
+//        sleep(3000);
+
+        robot.launchMotor1.setPower(0);
+        robot.launchMotor2.setPower(0);
+        dropParticleBasket();
+//        sleep(3000);
+        launchTime.reset();
+        while (launchTime.seconds() < timeout) {
+            idle();
         }
         stopBasket();
     }
@@ -293,6 +304,35 @@ public abstract class RoboLordsLinearOpMode extends LinearOpMode {
     }
 
     private boolean isColorLightDetected(String colorName) {
+        boolean isColorDetected = false;
+        if (colorName.equals("RED") && (robot.colorSensor1.red() > COLOR_DETECTION_INTENSITY)) {
+            isColorDetected = true;
+        }
+        else if (colorName.equals("BLUE") && (robot.colorSensor1.blue() > COLOR_DETECTION_INTENSITY)) {
+            isColorDetected = true;
+        }
+
+        if (colorName.equals("RED") && (robot.colorSensor2.red() > COLOR_DETECTION_INTENSITY)) {
+            isColorDetected = true;
+        }
+        else if (colorName.equals("BLUE") && (robot.colorSensor2.blue() > COLOR_DETECTION_INTENSITY)) {
+            isColorDetected = true;
+        }
+        // send the info back to driver station using telemetry function.
+        log("Clear", robot.colorSensor1.alpha());
+        log("Red  ", robot.colorSensor1.red());
+        log("Green", robot.colorSensor1.green());
+        log("Blue ", robot.colorSensor1.blue());
+
+        log("Clear", robot.colorSensor2.alpha());
+        log("Red  ", robot.colorSensor2.red());
+        log("Green", robot.colorSensor2.green());
+        log("Blue ", robot.colorSensor2.blue());
+        return isColorDetected;
+
+    }
+
+    private boolean isAnyColorDetected(String colorName) {
         boolean isColorDetected = false;
         if (colorName.equals("RED") && (robot.colorSensor1.red() > COLOR_DETECTION_INTENSITY)) {
             isColorDetected = true;
