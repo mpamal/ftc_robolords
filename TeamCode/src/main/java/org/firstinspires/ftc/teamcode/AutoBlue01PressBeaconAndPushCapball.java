@@ -37,26 +37,34 @@ public class AutoBlue01PressBeaconAndPushCapball extends RoboLordsLinearOpMode {
         disableAllSensors();
         enableOpticalDistanceSensor(true);
         enableTouchSensor(true);
+        enableColorSensor1(true);
+        enableColorSensor2(true);
         encoderDrive(DRIVE_NORMAL_SPEED, 34);
         encoderDriveTurnRight(TURN_SPEED);
         encoderDrive(DRIVE_NORMAL_SPEED, 16);
         encoderDriveTurnLeft(TURN_SPEED);
         encoderDrive(DRIVE_NORMAL_SPEED, 10);
         encoderDriveTurnRight(TURN_SPEED);
-        encoderDrive(DRIVE_SLOW_SPEED, 13);
-        enableOpticalDistanceSensor(true);
-        while (opModeIsActive() && !isBlueOrRedLightDetected()){
-            enableTouchSensor(false);
-            enableOpticalDistanceSensor(false);
-            enableColorSensor(true);
+        encoderDrive(DRIVE_NORMAL_SPEED, 15);
+        while (opModeIsActive() && !isBlueOrRedLightDetected() && runtime.seconds() < 20){
+//            enableTouchSensor(false);
+//            enableOpticalDistanceSensor(false);
+//            enableColorSensor(true);
+//            enableOpticalDistanceSensor(true);
+//            enableTouchSensor(true);
+            enableColorSensor1(true);
+            enableColorSensor2(true);
             encoderDrive(DRIVE_SLOW_SPEED, -6);
             moveLeft(DRIVE_SLOW_SPEED);
             while (opModeIsActive() && !isObstacleDetected()) {
                 enableTouchSensor(true);
                 enableOpticalDistanceSensor(true);
+                enableColorSensor1(true);
+                enableColorSensor2(true);
                 encoderDrive(DRIVE_SLOW_SPEED, 12);
+                disableAllSensors();
             }
-
+            disableAllSensors();
             line.addData("Moving left, Red or blue detected:", isBlueOrRedLightDetected());
             telemetry.update();
         }
@@ -74,7 +82,7 @@ public class AutoBlue01PressBeaconAndPushCapball extends RoboLordsLinearOpMode {
                 break;
             }
             enableTouchSensor(false);
-            encoderDrive(DRIVE_SLOW_SPEED, -6);
+            encoderDrive(DRIVE_NORMAL_SPEED, -6);
             sleep(1000);
             enableTouchSensor(true);
             encoderDrive(DRIVE_NORMAL_SPEED, 36);
@@ -88,12 +96,11 @@ public class AutoBlue01PressBeaconAndPushCapball extends RoboLordsLinearOpMode {
         encoderDrive(DRIVE_SLOW_SPEED, -12);
         encoderDriveTurnLeft(TURN_SPEED);
         encoderDriveTurnLeft(TURN_SPEED);
+        encoderDriveTurn45Left(TURN_SPEED);
         enableTouchSensor(true);
-        encoderDrive(DRIVE_SLOW_SPEED, 36); //should be 60
+        encoderDrive(DRIVE_SLOW_SPEED, 30); //should be 60
         enableTouchSensor(false);
-        encoderDrive(DRIVE_SLOW_SPEED, -4);
-        enableTouchSensor(true);
-        encoderDrive(DRIVE_NORMAL_SPEED, 6);
+        encoderDriveTurnLeft(TURN_SPEED);
         disableAllSensors();
         idle();
     }

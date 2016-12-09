@@ -17,8 +17,9 @@ public class AutoBlue03PushCapball extends RoboLordsLinearOpMode {
         double timeoutSeconds;
         robot.init(hardwareMap);
         enableOpticalDistanceSensor(true);
+        encoderDrive(DRIVE_SLOW_SPEED, 5);
         encoderDriveTurn45Right(DRIVE_NORMAL_SPEED);
-        encoderDrive(DRIVE_NORMAL_SPEED, 50);
+        encoderDrive(DRIVE_NORMAL_SPEED, 45);
 //        encoderDriveTurnRight(TURN_SPEED);
 
         idle();

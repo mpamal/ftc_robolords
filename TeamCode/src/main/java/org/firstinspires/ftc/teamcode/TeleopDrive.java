@@ -112,11 +112,11 @@ public class TeleopDrive extends RoboLordsLinearOpMode {
             }
 
             if (gamepad2.left_trigger > 0) {
-                robot.tubeServo.setPosition(robot.TUBE_SERVO_POSITION_DEGREE_45);
+                dropParticleBasket();
             } else if (gamepad2.right_trigger > 0) {
-                robot.tubeServo.setPosition(robot.TUBE_SERVO_POSITION_DEGREE_180);
+                liftParticleBasket();
             } else {
-//                robot.tubeServo.;
+                stopBasket();
             }
 
             // Send telemetry message to signify robot running;

@@ -44,7 +44,8 @@ public class AutoTestColorSensor extends RoboLordsLinearOpMode {
 
         // Note: Reverse movement is obtained by setting a negative distance (not speed)
         disableAllSensors();
-        enableColorSensor(true);
+        enableColorSensor1(true);
+        enableColorSensor2(true);
         encoderDrive(DRIVE_SLOW_SPEED, 48, 48, 10.0);  // S1: Forward 48 Inches with 10 Sec timeout
         if (isBlueLightDetected() || isWhiteLightDetected()) {
             disableAllSensors();

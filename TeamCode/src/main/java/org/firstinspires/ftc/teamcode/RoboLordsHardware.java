@@ -2,7 +2,6 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.hardware.ColorSensor;
 import com.qualcomm.robotcore.hardware.DcMotor;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.HardwareMap;
 import com.qualcomm.robotcore.hardware.IrSeekerSensor;
 import com.qualcomm.robotcore.hardware.OpticalDistanceSensor;
@@ -19,14 +18,16 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Servo channel:  Servo to open left claw:  "left_hand"
  * Servo channel:  Servo to open right claw: "right_hand"
  */
-public class RoboLordsHardware {
+public class
+RoboLordsHardware {
     //    Motors
     public DcMotor leftDriveMotor = null; //left_drive
     public DcMotor rightDriveMotor = null; //right_drive
     public DcMotor launchMotor1 = null; //throw_motor
     public DcMotor launchMotor2 = null; //throw_motor
     public DcMotor pickupMotor1 = null; //pickup_motor
-    public DcMotor pickupMotor2 = null; //pickup_motor
+//    public DcMotor pickupMotor2 = null; //pickup_motor
+    public DcMotor liftMotor = null; //linear_motor this is for lifting the particle in the back of the robot
 //    public DcMotor  armMotor    = null;
 
     //    Servos
@@ -38,7 +39,8 @@ public class RoboLordsHardware {
     public OpticalDistanceSensor opticalDistanceSensor = null;
     public IrSeekerSensor irSeekerSensor = null;
     public TouchSensor touchSensor = null;
-    public ColorSensor colorSensor;
+    public ColorSensor colorSensor1;
+    public ColorSensor colorSensor2;
 
     //    Initial configuration values
     public static final double TUBE_SERVO_POSITION_START = 0.0;
@@ -50,6 +52,8 @@ public class RoboLordsHardware {
     public static final double ARM_DOWN_POWER = -0.45;
     public static final double MOTOR_FULL_POWER_FORWARD = 1.0;
     public static final double MOTOR_FULL_POWER_REVERSE = -1.0;
+    public static final double LIFT_MOTOR_FORWARD = 0.25;
+    public static final double LIFT_MOTOR_REVERSE = -0.25;
 
     /* local OpMode members. */
     HardwareMap hwMap = null;
@@ -72,7 +76,8 @@ public class RoboLordsHardware {
         launchMotor1 = hwMap.dcMotor.get("launch_motor1");
         launchMotor2 = hwMap.dcMotor.get("launch_motor2");
         pickupMotor1 = hwMap.dcMotor.get("pickup_motor1");
-        pickupMotor2 = hwMap.dcMotor.get("pickup_motor2");
+//      pickupMotor2 = hwMap.dcMotor.get("pickup_motor2");
+        liftMotor = hwMap.dcMotor.get("lift_motor");
 
         leftDriveMotor.setDirection(DcMotor.Direction.FORWARD); // Set to REVERSE if using AndyMark motors
         rightDriveMotor.setDirection(DcMotor.Direction.REVERSE);// Set to FORWARD if using AndyMark motors
@@ -92,7 +97,8 @@ public class RoboLordsHardware {
         launchMotor1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         launchMotor2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         pickupMotor1.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
-        pickupMotor2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+//      pickupMotor2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        liftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         // Define and initialize ALL installed servos.
         tubeServo = hwMap.servo.get("tube_servo");
@@ -108,7 +114,8 @@ public class RoboLordsHardware {
         irSeekerSensor = hwMap.irSeekerSensor.get("irs");
         touchSensor = hwMap.touchSensor.get("touch_sensor");
 
-        colorSensor = hwMap.colorSensor.get("color_sensor");
+        colorSensor1 = hwMap.colorSensor.get("color_sensor");
+        colorSensor2 = hwMap.colorSensor.get("color_sensor");
     }
 
     /***

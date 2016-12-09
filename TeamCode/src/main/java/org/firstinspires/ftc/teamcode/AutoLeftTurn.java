@@ -41,7 +41,8 @@ public class AutoLeftTurn extends RoboLordsLinearOpMode {
         timeoutSeconds = 25.0;
         runtime.reset();
         enableTouchSensor(true);
-        enableColorSensor(true);
+        enableColorSensor1(true);
+        enableColorSensor2(true);
         encoderDriveTurnLeft(TURN_SPEED);
 //        encoderDriveTurnRight(TURN_SPEED);
 

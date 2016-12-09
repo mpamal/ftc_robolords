@@ -35,7 +35,8 @@ public class AutoStraightLine extends RoboLordsLinearOpMode {
         timeoutSeconds = 25.0;
         runtime.reset();
         enableTouchSensor(true);
-        enableColorSensor(true);
+        enableColorSensor1(true);
+        enableColorSensor2(true);
         encoderDrive(DRIVE_SLOW_SPEED, 36);
 //        encoderDriveTurnRight(TURN_SPEED);
 

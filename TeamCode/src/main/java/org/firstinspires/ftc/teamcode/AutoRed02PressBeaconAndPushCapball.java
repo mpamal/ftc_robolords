@@ -43,7 +43,8 @@ public class AutoRed02PressBeaconAndPushCapball extends RoboLordsLinearOpMode {
         disableAllSensors();
         enableOpticalDistanceSensor(true);
         enableTouchSensor(true);
-        enableColorSensor(true);
+        enableColorSensor1(true);
+        enableColorSensor2(true);
         while (opModeIsActive() && !isBlueOrRedLightDetected() && runtime.seconds() < 18.0){
             enableTouchSensor(false);
             enableOpticalDistanceSensor(false);
