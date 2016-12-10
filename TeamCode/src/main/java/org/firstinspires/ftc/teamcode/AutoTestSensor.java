@@ -6,8 +6,8 @@ import com.qualcomm.robotcore.hardware.DcMotor;
 /**
  * Created by RoboLords
  */
-@Autonomous(name = "Auto: Test Color Sensor", group = "RoboLords")
-public class AutoTestColorSensor extends RoboLordsLinearOpMode {
+@Autonomous(name = "Auto: Test Sensor", group = "RoboLords")
+public class AutoTestSensor extends RoboLordsLinearOpMode {
     private static final double DRIVE_SLOW_SPEED = 0.5;
     private static final double DRIVE_NORMAL_SPEED = 0.75;
     private static final double DRIVE_HIGH_SPEED = 1.0;

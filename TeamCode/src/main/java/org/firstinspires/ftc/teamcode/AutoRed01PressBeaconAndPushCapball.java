@@ -11,7 +11,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 public class AutoRed01PressBeaconAndPushCapball extends RoboLordsLinearOpMode {
     private static final double DRIVE_SLOW_SPEED = 0.25;
     private static final double DRIVE_NORMAL_SPEED = 0.5;
-    private static final double DRIVE_HIGH_SPEED = 1.0;
+    private static final double DRIVE_HIGH_SPEED = 0.90;
     private static final double TURN_SPEED = 0.25;
 
     @Override
@@ -37,24 +37,25 @@ public class AutoRed01PressBeaconAndPushCapball extends RoboLordsLinearOpMode {
         disableAllSensors();
         enableTouchSensor(true);
         enableOpticalDistanceSensor(true);
-        encoderDrive(DRIVE_NORMAL_SPEED, 55);
-        encoderDriveTurnLeft(TURN_SPEED);
-        encoderDrive(DRIVE_NORMAL_SPEED, 45);
-        disableAllSensors();
-        enableOpticalDistanceSensor(true);
-        enableTouchSensor(true);
+        encoderDrive(DRIVE_NORMAL_SPEED, 6);
+        encoderDriveTurn45Left(TURN_SPEED);
+        encoderDrive(DRIVE_HIGH_SPEED, 40);
+        encoderDriveTurn45Left(TURN_SPEED);
+
         enableColorSensors(true);
-        while (opModeIsActive() && !isRedOrBlueColorDetected() && runtime.seconds() < 18.0){
-            enableTouchSensor(false);
-            enableOpticalDistanceSensor(false);
+        encoderDrive(DRIVE_NORMAL_SPEED, 26);
+
+        while (opModeIsActive() && !isRedOrBlueColorDetected() && runtime.seconds() < timeoutSeconds){
+            disableAllSensors();
             encoderDrive(DRIVE_SLOW_SPEED, -6);
             moveLeft(DRIVE_SLOW_SPEED);
-            while (opModeIsActive() && !isObstacleDetected()) {
+            if (opModeIsActive() && !isObstacleDetected()) {
                 enableTouchSensor(true);
                 enableOpticalDistanceSensor(true);
-                encoderDrive(DRIVE_SLOW_SPEED, 12);
+                enableColorSensors(true);
+                encoderDrive(DRIVE_SLOW_SPEED, 20);
             }
-
+            enableColorSensors(true);
             line.addData("Moving left, Red or blue detected:", isRedOrBlueColorDetected());
             telemetry.update();
         }
@@ -64,39 +65,29 @@ public class AutoRed01PressBeaconAndPushCapball extends RoboLordsLinearOpMode {
 
         disableAllSensors();
         enableTouchSensor(true);
-        encoderDrive(DRIVE_NORMAL_SPEED, 12);
-
-        while (opModeIsActive() && isRedLightDetected() && runtime.seconds() < 23.0) {
+        while (opModeIsActive() && isBlueLightDetected() && runtime.seconds() < timeoutSeconds) {
             sleep(1000);
             if (isBlueLightDetected()) {
                 break;
             }
             enableTouchSensor(false);
-            encoderDrive(DRIVE_SLOW_SPEED, -6);
+            encoderDrive(DRIVE_NORMAL_SPEED, -6);
             sleep(1000);
             enableTouchSensor(true);
-            encoderDrive(DRIVE_NORMAL_SPEED, 36);
+            encoderDrive(DRIVE_NORMAL_SPEED, 20);
             //check if blue beacon is on. If not backup and press again after 5 seconds
         }
-        encoderDrive(DRIVE_NORMAL_SPEED, -6);
-        encoderDriveTurnRight(DRIVE_NORMAL_SPEED);
-        encoderDriveTurnRight(DRIVE_NORMAL_SPEED);
-        encoderDrive(DRIVE_HIGH_SPEED, 36);
-
         line.addData("Beacon detected blue:", isBlueLightDetected());
         telemetry.update();
 
         disableAllSensors();
         //backup and push capball
-        encoderDrive(DRIVE_SLOW_SPEED, -12);
-        encoderDriveTurnLeft(TURN_SPEED);
-        encoderDriveTurnLeft(TURN_SPEED);
+        encoderDrive(DRIVE_NORMAL_SPEED, -12);
+        encoderDriveTurnRight(TURN_SPEED);
+        encoderDriveTurnRight(TURN_SPEED);
+        encoderDriveTurn45Right(TURN_SPEED);
         enableTouchSensor(true);
-        encoderDrive(DRIVE_SLOW_SPEED, 36); //should be 60
-        enableTouchSensor(false);
-        encoderDrive(DRIVE_SLOW_SPEED, -4);
-        enableTouchSensor(true);
-        encoderDrive(DRIVE_NORMAL_SPEED, 6);
+        encoderDrive(DRIVE_NORMAL_SPEED, 34); //should be 60
         disableAllSensors();
         idle();
     }

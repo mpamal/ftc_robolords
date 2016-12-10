@@ -22,7 +22,7 @@ import java.util.concurrent.locks.Lock;
  * calibration. You can also use the X/Y buttons to turn the sensor's LED
  * on and off, respectively.
  */
-@TeleOp(name = "CalibrateColorSensor", group = "RoboLords")
+//@TeleOp(name = "CalibrateColorSensor", group = "RoboLords")
 public class CalibrateColorSensor extends OpMode implements I2cPortReadyCallback {
 
     // IMPORTANT!

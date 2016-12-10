@@ -10,7 +10,7 @@ import org.firstinspires.ftc.robotcore.external.Telemetry;
 @Autonomous(name = "Blue:01: Press Beacon and Push Capball", group = "RoboLords")
 public class AutoBlue01PressBeaconAndPushCapball extends RoboLordsLinearOpMode {
     private static final double DRIVE_SLOW_SPEED = 0.25;
-    private static final double DRIVE_NORMAL_SPEED = 0.4;
+    private static final double DRIVE_NORMAL_SPEED = 0.6;
     private static final double DRIVE_HIGH_SPEED = 1.0;
     private static final double TURN_SPEED = 0.25;
 
@@ -32,7 +32,7 @@ public class AutoBlue01PressBeaconAndPushCapball extends RoboLordsLinearOpMode {
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
 
-        timeoutSeconds = 25.0;
+        timeoutSeconds = 20.0;
         runtime.reset();
         disableAllSensors();
         enableOpticalDistanceSensor(true);
@@ -41,17 +41,11 @@ public class AutoBlue01PressBeaconAndPushCapball extends RoboLordsLinearOpMode {
         encoderDriveTurnRight(TURN_SPEED);
         encoderDrive(DRIVE_NORMAL_SPEED, 12);
         encoderDriveTurnLeft(TURN_SPEED);
-        encoderDrive(DRIVE_NORMAL_SPEED, 8);
+        encoderDrive(DRIVE_NORMAL_SPEED, 12);
         encoderDriveTurnRight(TURN_SPEED);
         enableColorSensors(true);
         encoderDrive(DRIVE_NORMAL_SPEED, 30);
         while (opModeIsActive() && !isRedOrBlueColorDetected() && runtime.seconds() < timeoutSeconds){
-//            enableTouchSensor(false);
-//            enableOpticalDistanceSensor(false);
-//            enableColorSensor(true);
-//            enableOpticalDistanceSensor(true);
-//            enableTouchSensor(true);
-//            enableColorSensors(true);
             disableAllSensors();
             encoderDrive(DRIVE_SLOW_SPEED, -6);
             moveLeft(DRIVE_SLOW_SPEED);
@@ -88,12 +82,12 @@ public class AutoBlue01PressBeaconAndPushCapball extends RoboLordsLinearOpMode {
 
         disableAllSensors();
         //backup and push capball
-        encoderDrive(DRIVE_SLOW_SPEED, -12);
+        encoderDrive(DRIVE_NORMAL_SPEED, -12);
         encoderDriveTurnLeft(TURN_SPEED);
         encoderDriveTurnLeft(TURN_SPEED);
         encoderDriveTurn45Left(TURN_SPEED);
         enableTouchSensor(true);
-        encoderDrive(DRIVE_SLOW_SPEED, 30); //should be 60
+        encoderDrive(DRIVE_NORMAL_SPEED, 34); //should be 60
         disableAllSensors();
         idle();
     }
