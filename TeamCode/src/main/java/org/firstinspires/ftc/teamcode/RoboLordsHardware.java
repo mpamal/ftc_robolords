@@ -31,16 +31,16 @@ RoboLordsHardware {
 //    public DcMotor  armMotor    = null;
 
     //    Servos
-    public Servo tubeServo = null; //tube_servo
-    public Servo leftClaw = null;  //left_hand
-    public Servo rightClaw = null; //right_hand
+//    public Servo tubeServo = null; //tube_servo
+//    public Servo leftClaw = null;  //left_hand
+//    public Servo rightClaw = null; //right_hand
 
     //    Sensors
     public OpticalDistanceSensor opticalDistanceSensor = null;
     public IrSeekerSensor irSeekerSensor = null;
     public TouchSensor touchSensor = null;
-    public ColorSensor colorSensor1;
-    public ColorSensor colorSensor2;
+    public ColorSensor leftColorSensor;
+//    public ColorSensor rightColorSensor;
 
     //    Initial configuration values
     public static final double TUBE_SERVO_POSITION_START = 0.0;
@@ -101,21 +101,21 @@ RoboLordsHardware {
         liftMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
         // Define and initialize ALL installed servos.
-        tubeServo = hwMap.servo.get("tube_servo");
-        leftClaw = hwMap.servo.get("left_hand");
-        rightClaw = hwMap.servo.get("right_hand");
+//        tubeServo = hwMap.servo.get("tube_servo");
+//        leftClaw = hwMap.servo.get("left_hand");
+//        rightClaw = hwMap.servo.get("right_hand");
 
-        tubeServo.setPosition(TUBE_SERVO_POSITION_START);
+//        tubeServo.setPosition(TUBE_SERVO_POSITION_START);
 
-        leftClaw.setPosition(MID_SERVO);
-        rightClaw.setPosition(MID_SERVO);
+//        leftClaw.setPosition(MID_SERVO);
+//        rightClaw.setPosition(MID_SERVO);
 //        Define and intialize the sensors
         opticalDistanceSensor = hwMap.opticalDistanceSensor.get("ods");
         irSeekerSensor = hwMap.irSeekerSensor.get("irs");
         touchSensor = hwMap.touchSensor.get("touch_sensor");
 
-        colorSensor1 = hwMap.colorSensor.get("color_sensor");
-        colorSensor2 = hwMap.colorSensor.get("color_sensor");
+        leftColorSensor = hwMap.colorSensor.get("left_color_sensor");
+//        rightColorSensor = hwMap.colorSensor.get("right_color_sensor");
     }
 
     /***

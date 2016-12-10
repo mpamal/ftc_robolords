@@ -24,8 +24,10 @@ public abstract class RoboLordsLinearOpMode extends LinearOpMode {
     private static int COLOR_DETECTION_INTENSITY = 10;
 
     private boolean useTouchSensor = false;
-    private boolean useColorSensor1 = false;
-    private boolean useColorSensor2 = false;
+    private boolean useColorSensor = false;
+    private boolean useBlueColorSensor = false;
+    private boolean useRedColorSensor = false;
+    //    private boolean useRightColorSensor = false;
     private boolean useOpticalDistanceSensor = false;
 
 
@@ -75,10 +77,12 @@ public abstract class RoboLordsLinearOpMode extends LinearOpMode {
                     break;
                 }
 
-//                if (useColorSensor && isWhiteLightDetected()) {
-//                    log("Color", "White line detected. Now stopping robot");
-//                    break;
-//                }
+                if (useColorSensor) {
+                    if (isRedOrBlueColorDetected()) {
+                        log("Color", "Red or Blue. Now stopping robot");
+                        break;
+                    }
+                }
 
                 if (useOpticalDistanceSensor && isODSDetected()) {
                     log("ODS", "Obstacle Detected. Stopping robot");
@@ -156,13 +160,13 @@ public abstract class RoboLordsLinearOpMode extends LinearOpMode {
         robot.rightDriveMotor.setPower(0);
     }
 
-    protected void log(String caption, String format, Object... args){
+    protected void log(String caption, String format, Object... args) {
         String logMsg = caption + ":" + String.format(format, args);
         Log.v("ROBOLORDS", logMsg);
         telemetry.addData(caption, format, args);
     }
 
-    protected void log(String caption, Object msg){
+    protected void log(String caption, Object msg) {
         String logMsg = caption + ":" + msg;
         Log.v("ROBOLORDS", logMsg);
         telemetry.addData(caption, msg);
@@ -239,11 +243,12 @@ public abstract class RoboLordsLinearOpMode extends LinearOpMode {
 
     protected void disableAllSensors() {
         useTouchSensor = false;
-        useColorSensor1 = false;
-        useColorSensor2 = false;
+        useColorSensor = false;
+        useBlueColorSensor = false;
+        useRedColorSensor = false;
         useOpticalDistanceSensor = false;
-        robot.colorSensor1.enableLed(false);
-        robot.colorSensor2.enableLed(false);
+        robot.leftColorSensor.enableLed(false);
+//        robot.rightColorSensor.enableLed(false);
     }
 
     protected void enableTouchSensor(boolean isSensorEnabled) {
@@ -254,40 +259,52 @@ public abstract class RoboLordsLinearOpMode extends LinearOpMode {
         return robot.touchSensor.isPressed();
     }
 
-    protected void enableColorSensor1(boolean isSensorEnabled) {
-        robot.colorSensor1.enableLed(isSensorEnabled);
-        this.useColorSensor1 = isSensorEnabled;
+    protected void enableColorSensors(boolean isSensorEnabled) {
+        enableColorSensor1(true);
+        enableColorSensor2(true);
     }
-    protected void enableColorSensor2(boolean isSensorEnabled) {
-        robot.colorSensor2.enableLed(isSensorEnabled);
-        this.useColorSensor2 = isSensorEnabled;
+
+    protected void enableBlueColorSensor(boolean isSensorEnabled) {
+        enableColorSensor1(true);
+        enableColorSensor2(true);
     }
+
+    private void enableColorSensor1(boolean isSensorEnabled) {
+        robot.leftColorSensor.enableLed(isSensorEnabled);
+        this.useColorSensor = isSensorEnabled;
+    }
+
+    private void enableColorSensor2(boolean isSensorEnabled) {
+//        robot.rightColorSensor.enableLed(isSensorEnabled);
+        this.useColorSensor = isSensorEnabled;
+    }
+
     protected void enableOpticalDistanceSensor(boolean isSensorEnabled) {
         this.useOpticalDistanceSensor = isSensorEnabled;
     }
 
     protected boolean isWhiteLightDetected() {
         boolean isWhiteDetected = false;
-        if (robot.colorSensor1.red() > COLOR_DETECTION_INTENSITY
-                && robot.colorSensor1.green() > COLOR_DETECTION_INTENSITY
-                && robot.colorSensor1.blue() > COLOR_DETECTION_INTENSITY) {
+        if (robot.leftColorSensor.red() > COLOR_DETECTION_INTENSITY
+                && robot.leftColorSensor.green() > COLOR_DETECTION_INTENSITY
+                && robot.leftColorSensor.blue() > COLOR_DETECTION_INTENSITY) {
             isWhiteDetected = true;
         }
-        if (robot.colorSensor2.red() > COLOR_DETECTION_INTENSITY
-                && robot.colorSensor2.green() > COLOR_DETECTION_INTENSITY
-                && robot.colorSensor2.blue() > COLOR_DETECTION_INTENSITY) {
-            isWhiteDetected = true;
-        }
+//        if (robot.rightColorSensor.red() > COLOR_DETECTION_INTENSITY
+//                && robot.rightColorSensor.green() > COLOR_DETECTION_INTENSITY
+//                && robot.rightColorSensor.blue() > COLOR_DETECTION_INTENSITY) {
+//            isWhiteDetected = true;
+//        }
         // send the info back to driver station using telemetry function.
-        log("Clear", robot.colorSensor1.alpha());
-        log("Red  ", robot.colorSensor1.red());
-        log("Green", robot.colorSensor1.green());
-        log("Blue ", robot.colorSensor1.blue());
-
-        log("Clear", robot.colorSensor2.alpha());
-        log("Red  ", robot.colorSensor2.red());
-        log("Green", robot.colorSensor2.green());
-        log("Blue ", robot.colorSensor2.blue());
+//        log("Clear", robot.leftColorSensor.alpha());
+//        log("Red  ", robot.leftColorSensor.red());
+//        log("Green", robot.leftColorSensor.green());
+//        log("Blue ", robot.leftColorSensor.blue());
+//
+//        log("Clear", robot.rightColorSensor.alpha());
+//        log("Red  ", robot.rightColorSensor.red());
+//        log("Green", robot.rightColorSensor.green());
+//        log("Blue ", robot.rightColorSensor.blue());
         return isWhiteDetected;
     }
 
@@ -299,64 +316,62 @@ public abstract class RoboLordsLinearOpMode extends LinearOpMode {
         return isColorLightDetected("RED");
     }
 
-    protected boolean isBlueOrRedLightDetected() {
-        return isColorLightDetected("BLUE") || isColorLightDetected("RED");
-    }
+//    protected boolean isBlueOrRedLightDetected() {
+//        return isColorLightDetected("BLUE") || isColorLightDetected("RED");
+//    }
 
     private boolean isColorLightDetected(String colorName) {
         boolean isColorDetected = false;
-        if (colorName.equals("RED") && (robot.colorSensor1.red() > COLOR_DETECTION_INTENSITY)) {
+//        if (colorName.equals("RED") && (robot.leftColorSensor.red() > COLOR_DETECTION_INTENSITY
+//                && robot.rightColorSensor.red() > COLOR_DETECTION_INTENSITY)) {
+//            isColorDetected = true;
+//        } else if (colorName.equals("BLUE") && (robot.leftColorSensor.blue() > COLOR_DETECTION_INTENSITY
+//                && robot.rightColorSensor.blue() > COLOR_DETECTION_INTENSITY)) {
+//            isColorDetected = true;
+//        }
+
+        if (colorName.equals("RED") && (robot.leftColorSensor.red() > COLOR_DETECTION_INTENSITY)) {
             isColorDetected = true;
-        }
-        else if (colorName.equals("BLUE") && (robot.colorSensor1.blue() > COLOR_DETECTION_INTENSITY)) {
+        } else if (colorName.equals("BLUE") && (robot.leftColorSensor.blue() > COLOR_DETECTION_INTENSITY)) {
             isColorDetected = true;
         }
 
-        if (colorName.equals("RED") && (robot.colorSensor2.red() > COLOR_DETECTION_INTENSITY)) {
-            isColorDetected = true;
-        }
-        else if (colorName.equals("BLUE") && (robot.colorSensor2.blue() > COLOR_DETECTION_INTENSITY)) {
-            isColorDetected = true;
-        }
         // send the info back to driver station using telemetry function.
-        log("Clear", robot.colorSensor1.alpha());
-        log("Red  ", robot.colorSensor1.red());
-        log("Green", robot.colorSensor1.green());
-        log("Blue ", robot.colorSensor1.blue());
-
-        log("Clear", robot.colorSensor2.alpha());
-        log("Red  ", robot.colorSensor2.red());
-        log("Green", robot.colorSensor2.green());
-        log("Blue ", robot.colorSensor2.blue());
+//        log("Clear", robot.leftColorSensor.alpha());
+//        log("Red  ", robot.leftColorSensor.red());
+//        log("Green", robot.leftColorSensor.green());
+//        log("Blue ", robot.leftColorSensor.blue());
+//
+//        log("Clear", robot.rightColorSensor.alpha());
+//        log("Red  ", robot.rightColorSensor.red());
+//        log("Green", robot.rightColorSensor.green());
+//        log("Blue ", robot.rightColorSensor.blue());
         return isColorDetected;
 
     }
 
-    private boolean isAnyColorDetected(String colorName) {
+    protected boolean isRedOrBlueColorDetected() {
         boolean isColorDetected = false;
-        if (colorName.equals("RED") && (robot.colorSensor1.red() > COLOR_DETECTION_INTENSITY)) {
+        if (robot.leftColorSensor.red() > COLOR_DETECTION_INTENSITY
+                || robot.leftColorSensor.blue() > COLOR_DETECTION_INTENSITY ) {
             isColorDetected = true;
         }
-        else if (colorName.equals("BLUE") && (robot.colorSensor1.blue() > COLOR_DETECTION_INTENSITY)) {
-            isColorDetected = true;
-        }
-
-        if (colorName.equals("RED") && (robot.colorSensor2.red() > COLOR_DETECTION_INTENSITY)) {
-            isColorDetected = true;
-        }
-        else if (colorName.equals("BLUE") && (robot.colorSensor2.blue() > COLOR_DETECTION_INTENSITY)) {
-            isColorDetected = true;
-        }
+//        if (robot.leftColorSensor.red() > COLOR_DETECTION_INTENSITY
+//                || robot.rightColorSensor.red() > COLOR_DETECTION_INTENSITY
+//                || robot.leftColorSensor.blue() > COLOR_DETECTION_INTENSITY
+//                || robot.rightColorSensor.blue() > COLOR_DETECTION_INTENSITY) {
+//            isColorDetected = true;
+//        }
         // send the info back to driver station using telemetry function.
-        log("Clear", robot.colorSensor1.alpha());
-        log("Red  ", robot.colorSensor1.red());
-        log("Green", robot.colorSensor1.green());
-        log("Blue ", robot.colorSensor1.blue());
+        log("Clear", robot.leftColorSensor.alpha());
+        log("Red  ", robot.leftColorSensor.red());
+        log("Green", robot.leftColorSensor.green());
+        log("Blue ", robot.leftColorSensor.blue());
 
-        log("Clear", robot.colorSensor2.alpha());
-        log("Red  ", robot.colorSensor2.red());
-        log("Green", robot.colorSensor2.green());
-        log("Blue ", robot.colorSensor2.blue());
+//        log("Clear", robot.rightColorSensor.alpha());
+//        log("Red  ", robot.rightColorSensor.red());
+//        log("Green", robot.rightColorSensor.green());
+//        log("Blue ", robot.rightColorSensor.blue());
         return isColorDetected;
 
     }
@@ -366,6 +381,6 @@ public abstract class RoboLordsLinearOpMode extends LinearOpMode {
     }
 
     protected boolean isODSDetected() {
-        return robot.opticalDistanceSensor.getRawLightDetected() > 1.2;
+        return robot.opticalDistanceSensor.getRawLightDetected() > 0.7;
     }
 }

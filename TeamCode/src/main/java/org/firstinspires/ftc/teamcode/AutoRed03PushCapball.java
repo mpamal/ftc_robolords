@@ -5,8 +5,8 @@ import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 /**
  * Created by RoboLords
  */
-@Autonomous(name = "Blue:03:Push Capball and Park at Center Vortex", group = "RoboLords")
-public class AutoBlue03PushCapball extends RoboLordsLinearOpMode {
+@Autonomous(name = "Red:03:Push Capball and Park at Center Vortex", group = "RoboLords")
+public class AutoRed03PushCapball extends RoboLordsLinearOpMode {
     private static final double DRIVE_SLOW_SPEED = 0.25;
     private static final double DRIVE_NORMAL_SPEED = 0.5;
     private static final double DRIVE_HIGH_SPEED = 0.75;
@@ -22,7 +22,7 @@ public class AutoBlue03PushCapball extends RoboLordsLinearOpMode {
         if (opModeIsActive()) {
             enableOpticalDistanceSensor(true);
             encoderDrive(DRIVE_SLOW_SPEED, 23);
-            encoderDriveTurn45Right(DRIVE_NORMAL_SPEED);
+            encoderDriveTurn45Left(DRIVE_NORMAL_SPEED);
             encoderDrive(DRIVE_NORMAL_SPEED, 34);
 //        encoderDriveTurnRight(TURN_SPEED);
         }

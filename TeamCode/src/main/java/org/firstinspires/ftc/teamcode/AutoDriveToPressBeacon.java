@@ -4,8 +4,6 @@ import android.graphics.Color;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
-import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
-import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 /**
@@ -58,23 +56,23 @@ public class AutoDriveToPressBeacon extends LinearOpMode {
             if ((currentButtonState == true) && (currentButtonState != previousState)) {
                 // button is transitioning to a pressed state. So Toggle LED
                 bLedOn = !bLedOn;
-                robot.colorSensor1.enableLed(bLedOn);
+                robot.leftColorSensor.enableLed(bLedOn);
             }
             if ((currentButtonState == true) && (currentButtonState != previousState)) {
                 // button is transitioning to a pressed state. So Toggle LED
                 bLedOn = !bLedOn;
-                robot.colorSensor2.enableLed(bLedOn);
+//                robot.rightColorSensor.enableLed(bLedOn);
             }
 
             // update previous state variable.
             previousState = currentButtonState;
 
             // convert the RGB values to HSV values.
-            Color.RGBToHSV(robot.colorSensor1.red() * 8, robot.colorSensor1.green() * 8, robot.colorSensor1.blue() * 8, hsvValues);
-            Color.RGBToHSV(robot.colorSensor2.red() * 8, robot.colorSensor1.green() * 8, robot.colorSensor1.blue() * 8, hsvValues);
+            Color.RGBToHSV(robot.leftColorSensor.red() * 8, robot.leftColorSensor.green() * 8, robot.leftColorSensor.blue() * 8, hsvValues);
+//            Color.RGBToHSV(robot.rightColorSensor.red() * 8, robot.leftColorSensor.green() * 8, robot.leftColorSensor.blue() * 8, hsvValues);
 
-            Color.RGBToHSV(robot.colorSensor1.red() * 8, robot.colorSensor2.green() * 8, robot.colorSensor2.blue() * 8, hsvValues);
-            Color.RGBToHSV(robot.colorSensor2.red() * 8, robot.colorSensor2.green() * 8, robot.colorSensor2.blue() * 8, hsvValues);
+//            Color.RGBToHSV(robot.leftColorSensor.red() * 8, robot.rightColorSensor.green() * 8, robot.rightColorSensor.blue() * 8, hsvValues);
+//            Color.RGBToHSV(robot.rightColorSensor.red() * 8, robot.rightColorSensor.green() * 8, robot.rightColorSensor.blue() * 8, hsvValues);
 
             // send the info back to driver station using telemetry function.
 //            telemetry.addData("LED", bLedOn ? "On" : "Off");

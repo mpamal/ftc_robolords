@@ -35,19 +35,17 @@ public class AutoBlue04PressBeaconAndPushCapball extends RoboLordsLinearOpMode {
         timeoutSeconds = 20.0;
         runtime.reset();
         disableAllSensors();
-        enableTouchSensor(true);
         enableOpticalDistanceSensor(true);
-        enableColorSensor1(true);
-        enableColorSensor2(true);
+        enableTouchSensor(true);
+//        enableColorSensors(true);
         encoderDrive(DRIVE_NORMAL_SPEED, 34);
         encoderDriveTurnRight(TURN_SPEED);
-        encoderDrive(DRIVE_HIGH_SPEED, 64);
+        encoderDrive(DRIVE_NORMAL_SPEED, 16);
         encoderDriveTurnLeft(TURN_SPEED);
         encoderDrive(DRIVE_NORMAL_SPEED, 10);
         encoderDriveTurnRight(TURN_SPEED);
-        encoderDrive(DRIVE_SLOW_SPEED, 13);
-        enableOpticalDistanceSensor(true);
-        while (opModeIsActive() && !isBlueOrRedLightDetected()){
+        encoderDrive(DRIVE_NORMAL_SPEED, 15);
+        while (opModeIsActive() && !isRedOrBlueColorDetected() && runtime.seconds() < timeoutSeconds){
             enableTouchSensor(false);
             enableOpticalDistanceSensor(false);
             encoderDrive(DRIVE_SLOW_SPEED, -6);
@@ -58,11 +56,11 @@ public class AutoBlue04PressBeaconAndPushCapball extends RoboLordsLinearOpMode {
                 encoderDrive(DRIVE_SLOW_SPEED, 12);
             }
 
-            line.addData("Moving left, Red or blue detected:", isBlueOrRedLightDetected());
+            line.addData("Moving left, Red or blue detected:", isRedOrBlueColorDetected());
             telemetry.update();
         }
 
-        line.addData("Beacon detected red or blue:", isBlueOrRedLightDetected());
+        line.addData("Beacon detected red or blue:", isRedOrBlueColorDetected());
         telemetry.update();
 
         disableAllSensors();

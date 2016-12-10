@@ -96,19 +96,19 @@ public class TeleopDrive extends RoboLordsLinearOpMode {
             if (gamepad2.x) {
 //                robot.armMotor.setPower(robot.ARM_UP_POWER);
 //                robot.rightClaw.setPosition(robot.MID_SERVO + clawOffset);
-                robot.tubeServo.setPosition(robot.TUBE_SERVO_POSITION_START);
+//                robot.tubeServo.setPosition(robot.TUBE_SERVO_POSITION_START);
             } else if (gamepad2.y) {
 //                robot.armMotor.setPower(robot.ARM_DOWN_POWER);
 //                robot.rightClaw.setPosition(robot.MID_SERVO - clawOffset);
-                robot.tubeServo.setPosition(robot.TUBE_SERVO_POSITION_DEGREE_45);
+//                robot.tubeServo.setPosition(robot.TUBE_SERVO_POSITION_DEGREE_45);
             } else if (gamepad2.b) {
 //                robot.armMotor.setPower(0.0);
 //                robot.rightClaw.setPosition(robot.MID_SERVO);
-                robot.tubeServo.setPosition(robot.TUBE_SERVO_POSITION_DEGREE_90);
+//                robot.tubeServo.setPosition(robot.TUBE_SERVO_POSITION_DEGREE_90);
             } else if (gamepad2.a) {
 //                robot.armMotor.setPower(0.0);
 //                robot.rightClaw.setPosition(robot.MID_SERVO);
-                robot.tubeServo.setPosition(robot.TUBE_SERVO_POSITION_DEGREE_180);
+//                robot.tubeServo.setPosition(robot.TUBE_SERVO_POSITION_DEGREE_180);
             }
 
             if (gamepad2.left_trigger > 0) {
@@ -126,9 +126,9 @@ public class TeleopDrive extends RoboLordsLinearOpMode {
             log("right", "%.2f", right);
 
             log("claw", "Offset = %.2f", clawOffset);
-            log("rightClaw position:", "%.2f", robot.rightClaw.getPosition());
-            log("leftClaw position:", "%.2f", robot.leftClaw.getPosition());
-            log("tubeServo position:", "%.2f", robot.tubeServo.getPosition());
+//            log("rightClaw position:", "%.2f", robot.rightClaw.getPosition());
+//            log("leftClaw position:", "%.2f", robot.leftClaw.getPosition());
+//            log("tubeServo position:", "%.2f", robot.tubeServo.getPosition());
 //
             log("Raw", robot.opticalDistanceSensor.getRawLightDetected());
             log("Normal", robot.opticalDistanceSensor.getLightDetected());

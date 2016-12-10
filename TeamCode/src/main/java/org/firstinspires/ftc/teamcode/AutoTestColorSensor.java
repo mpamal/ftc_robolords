@@ -21,22 +21,7 @@ public class AutoTestColorSensor extends RoboLordsLinearOpMode {
 
         robot.init(hardwareMap);
 
-        log("Status", "Resetting Encoders");
-        telemetry.update();
-
-        robot.leftDriveMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        robot.rightDriveMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        idle();
-
-        robot.leftDriveMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-        robot.rightDriveMotor.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
-
-        telemetry.addData("COUNTS_PER_INCH", "%7f", COUNTS_PER_INCH);
-
-        // Send telemetry message to indicate successful Encoder reset
-        log("Path0", "Starting at %7d :%7d",
-                robot.leftDriveMotor.getCurrentPosition(),
-                robot.rightDriveMotor.getCurrentPosition());
+        log("Status", "Hello driver");
         telemetry.update();
 
         // Wait for the game to start (driver presses PLAY)
@@ -44,26 +29,29 @@ public class AutoTestColorSensor extends RoboLordsLinearOpMode {
 
         // Note: Reverse movement is obtained by setting a negative distance (not speed)
         disableAllSensors();
-        enableColorSensor1(true);
-        enableColorSensor2(true);
-        encoderDrive(DRIVE_SLOW_SPEED, 48, 48, 10.0);  // S1: Forward 48 Inches with 10 Sec timeout
+        enableColorSensors(true);
+        enableOpticalDistanceSensor(true);
+        encoderDrive(DRIVE_SLOW_SPEED, 60);
         if (isBlueLightDetected() || isWhiteLightDetected()) {
             disableAllSensors();
-//            encoderDrive(DRIVE_SLOW_SPEED, 12, 12, 4.0);
-            encoderDrive(TURN_SPEED, -24, 24, 4.0);
-            enableTouchSensor(true);
-            encoderDrive(DRIVE_NORMAL_SPEED, 24, 24, 4.0);
-            //check if blue beacon is on. If not backup and press again after 5 seconds
+            encoderDrive(DRIVE_SLOW_SPEED, -12);
         }
-        disableAllSensors();
 
-        //Any servo operations can go here
-//        robot.leftClaw.setPosition(1.0);
-//        robot.rightClaw.setPosition(0.0);
-//        telemetry.addData("Path", "Complete");
-//        telemetry.update();
-
+        enableColorSensors(true);
         while (opModeIsActive()) {
+            log("ODS, raw", robot.opticalDistanceSensor.getRawLightDetected());
+            log("ODS, normal", robot.opticalDistanceSensor.getLightDetected());
+
+            log("Clear", robot.leftColorSensor.alpha());
+            log("Red  ", robot.leftColorSensor.red());
+            log("Green", robot.leftColorSensor.green());
+            log("Blue ", robot.leftColorSensor.blue());
+
+//            log("Clear", robot.rightColorSensor.alpha());
+//            log("Red  ", robot.rightColorSensor.red());
+//            log("Green", robot.rightColorSensor.green());
+//            log("Blue ", robot.rightColorSensor.blue());
+            telemetry.update();
             idle();
         }
     }

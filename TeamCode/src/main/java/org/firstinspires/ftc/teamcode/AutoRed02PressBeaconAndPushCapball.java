@@ -43,9 +43,8 @@ public class AutoRed02PressBeaconAndPushCapball extends RoboLordsLinearOpMode {
         disableAllSensors();
         enableOpticalDistanceSensor(true);
         enableTouchSensor(true);
-        enableColorSensor1(true);
-        enableColorSensor2(true);
-        while (opModeIsActive() && !isBlueOrRedLightDetected() && runtime.seconds() < 18.0){
+        enableColorSensors(true);
+        while (opModeIsActive() && !isRedOrBlueColorDetected() && runtime.seconds() < 18.0){
             enableTouchSensor(false);
             enableOpticalDistanceSensor(false);
             encoderDrive(DRIVE_SLOW_SPEED, -6);
@@ -56,11 +55,11 @@ public class AutoRed02PressBeaconAndPushCapball extends RoboLordsLinearOpMode {
                 encoderDrive(DRIVE_SLOW_SPEED, 12);
             }
 
-            line.addData("Moving left, Red or blue detected:", isBlueOrRedLightDetected());
+            line.addData("Moving left, Red or blue detected:", isRedOrBlueColorDetected());
             telemetry.update();
         }
 
-        line.addData("Beacon detected red or blue:", isBlueOrRedLightDetected());
+        line.addData("Beacon detected red or blue:", isRedOrBlueColorDetected());
         telemetry.update();
 
         disableAllSensors();
