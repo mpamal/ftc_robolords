@@ -37,7 +37,7 @@ public class AutoBlue01PressBeaconAndPushCapball extends RoboLordsLinearOpMode {
         disableAllSensors();
         enableOpticalDistanceSensor(true);
         enableTouchSensor(true);
-        encoderDrive(DRIVE_NORMAL_SPEED, 34);
+        encoderDrive(DRIVE_NORMAL_SPEED, 30);
         encoderDriveTurnRight(TURN_SPEED);
         encoderDrive(DRIVE_NORMAL_SPEED, 12);
         encoderDriveTurnLeft(TURN_SPEED);

@@ -261,12 +261,7 @@ public abstract class RoboLordsLinearOpMode extends LinearOpMode {
 
     protected void enableColorSensors(boolean isSensorEnabled) {
         enableColorSensor1(true);
-        enableColorSensor2(true);
-    }
-
-    protected void enableBlueColorSensor(boolean isSensorEnabled) {
-        enableColorSensor1(true);
-        enableColorSensor2(true);
+//        enableColorSensor2(true);
     }
 
     private void enableColorSensor1(boolean isSensorEnabled) {
